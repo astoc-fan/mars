@@ -1,4 +1,4 @@
-{#{% from 'bootstrap/nav.html' import render_nav_item %}#}
+{% from 'bootstrap/nav.html' import render_nav_item %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,19 +15,17 @@
 </head>
 <body>
 {% block nav %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-{#            <a class="navbar-brand" href="{{ url_for('main.index') }}">Hello, World!</a>#}
-            <a class="navbar-brand" href="#">Mars</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-                    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="{{ url_for('mars.index') }}">Mars</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+                    aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
+            <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
-                    aa
-{#                    {{ render_nav_item('main.index', 'Home') }}#}
-{#                    {{ render_nav_item('main.about', 'About') }}#}
+                    {{ render_nav_item('mars.index', 'Home') }}
+                    {#                    {{ render_nav_item('main.about', 'About') }}#}
                 </ul>
             </div>
         </div>
@@ -45,8 +43,9 @@
     {% block footer %}
         <footer>
             <p class="float-left">
-                <small> &copy; 2020 <a href="http://greyli.com" title="Written by Grey Li">Grey Li</a> -
-                    <a href="https://github.com/greyli/bluelog" title="Fork me on GitHub">GitHub</a> -
+                <small> &copy; 2020 <a href="mailto:stef.fan@expeditrors.com" title="Written by Stef Fan">Contact Stef
+                    Fan</a> -
+                    <a href="https://insite.expeditors.com" title="insite">Insite</a> -
                     <a href="http://helloflask.com" title="A HelloFlask project">HelloFlask</a>
                 </small>
             </p>
