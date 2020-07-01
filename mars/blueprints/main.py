@@ -7,7 +7,7 @@ from mars.extensions import db
 # from mars.models import Post, Category, Comment
 from mars.utils import redirect_back
 
-main_bp = Blueprint('mars', __name__)
+main_bp = Blueprint('main', __name__)
 
 
 @main_bp.route('/')
