@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{#{% from 'bootstrap/pagination.html' import render_pager %}#}
+{% from 'bootstrap/pagination.html' import render_pager %}
 
 {% block title %}Home{% endblock %}
 
@@ -8,7 +8,7 @@
 
             <h1 class="display-3">Hello Mars.</h1>
             <h4 class="lead">&nbsp;blah blah blah ...</h4>
-            <p><a class="btn btn-primary btn-lg" href="#">Join Now</a></p>
+            <p><a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Join Now</a></p>
 
     </div>
 {#    <div class="row">#}
