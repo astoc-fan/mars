@@ -3,11 +3,11 @@ import os
 import click
 from flask import Flask, render_template
 
-from mars.blueprints.admin import admin_bp
-from mars.blueprints.auth import auth_bp
+# from mars.blueprints.admin import admin_bp
+# from mars.blueprints.auth import auth_bp
 from mars.blueprints.main import main_bp
-from mars.extensions import bootstrap, db, login_manager, ckeditor, mail, moment
-from mars.models import Admin, Post, Category, Comment, Link
+from mars.extensions import bootstrap, db, login_manager, moment
+# from mars.models import Admin, Post, Category, Comment, Link
 from mars.settings import config
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -38,15 +38,15 @@ def register_extensions(app):
     bootstrap.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    ckeditor.init_app(app)
-    mail.init_app(app)
+    # ckeditor.init_app(app)
+    # mail.init_app(app)
     moment.init_app(app)
 
 
 def register_blueprints(app):
     app.register_blueprint(main_bp)
-    app.register_blueprint(admin_bp, url_prefix='/admin')
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+    # app.register_blueprint(admin_bp, url_prefix='/admin')
+    # app.register_blueprint(auth_bp, url_prefix='/auth')
 
 
 # def register_shell_context(app):
