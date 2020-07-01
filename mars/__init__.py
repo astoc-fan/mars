@@ -6,6 +6,7 @@ from flask import Flask, render_template
 # from mars.blueprints.admin import admin_bp
 # from mars.blueprints.auth import auth_bp
 from mars.blueprints.main import main_bp
+from mars.blueprints.auth import auth_bp
 from mars.extensions import bootstrap, db, login_manager, moment
 # from mars.models import Admin, Post, Category, Comment, Link
 from mars.settings import config
