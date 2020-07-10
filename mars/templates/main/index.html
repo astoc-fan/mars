@@ -4,22 +4,19 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+{% if current_user.is_authenticated %}
     <div class="jumbotron">
-
+            <h1 class="display-3">Welcome back,{{ current_user.name }}!</h1>
+            <h4 class="lead">&nbsp;blah blah blah ...</h4>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('auth.logout') }}">Logout</a></p>
+    </div>
+{% else %}
+    <div class="jumbotron">
             <h1 class="display-3">Hello Mars.</h1>
             <h4 class="lead">&nbsp;blah blah blah ...</h4>
             <p><a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Join Now</a>
             <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}">Login</a></p>
     </div>
-{#    <div class="row">#}
-{#        <div class="col-sm-8">#}
-{#            {% include 'blog/_posts.html' %}#}
-{#            {% if posts %}#}
-{#                <div class="page-footer">{{ render_pager(pagination) }}</div>#}
-{#            {% endif %}#}
-{#        </div>#}
-{#        <div class="col-sm-4 sidebar">#}
-{#            {% include 'blog/_sidebar.html' %}#}
-{#        </div>#}
-{#    </div>#}
+
+{% endif %}
 {% endblock %}
