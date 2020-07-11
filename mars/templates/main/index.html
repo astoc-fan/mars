@@ -4,19 +4,69 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
-    <div class="jumbotron">
-            <h1 class="display-3">Welcome back,{{ current_user.name }}!</h1>
-            <h4 class="lead">&nbsp;blah blah blah ...</h4>
-            <a class="btn btn-primary btn-lg" href="{{ url_for('auth.logout') }}">Logout</a></p>
-    </div>
-{% else %}
-    <div class="jumbotron">
-            <h1 class="display-3">Hello Mars.</h1>
-            <h4 class="lead">&nbsp;blah blah blah ...</h4>
-            <p><a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Join Now</a>
-            <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}">Login</a></p>
-    </div>
+    {% if current_user.is_authenticated %}
 
-{% endif %}
+        <p>Welcome back,{{ current_user.name }}!</p>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card border-primary mb-3">
+                    <h4 class="card-header">Dashboard</h4>
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            Branch Dashboard
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            Customers Dashboards
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            Customers Dashboards
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action disabled">
+                            Request one
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card border-primary mb-3">
+                    <h4 class="card-header">Invoice Processing</h4>
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            Request Tax Invoice
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            Customers Maintain
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action disabled">
+                            ....
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card border-primary mb-3">
+                    <h4 class="card-header">Settings</h4>
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            User Settings
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">Role
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action disabled">Permission
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="jumbotron">
+            <h1 class="display-3">Hello Mars.</h1>
+            <h4 class="lead">&nbsp;Welcome landing, Please join us now!</h4>
+            <p><a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Join Now</a>
+                <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}">Login</a></p>
+        </div>
+
+    {% endif %}
+
 {% endblock %}
