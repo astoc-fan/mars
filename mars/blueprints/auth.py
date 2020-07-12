@@ -1,3 +1,10 @@
+"""
+    :author: stef fan
+
+
+
+
+"""
 from flask import render_template, flash, redirect, url_for, Blueprint
 from flask_login import login_user, logout_user, login_required, current_user, login_fresh, confirm_login
 
@@ -30,18 +37,17 @@ def login():
     return render_template('auth/login.html', form=form)
 
 
-@auth_bp.route('/confirm/<token>')
+@auth_bp.route('/re-authenticate', methods=['GET', 'POST'])
 @login_required
-def confirm(token):
-    if current_user.confirmed:
+def re_authenticate():
+    if login_fresh():
         return redirect(url_for('main.index'))
 
-    if validate_token(user=current_user, token=token, operation=Operations.CONFIRM):
-        flash('Account confirmed.', 'success')
-        return redirect(url_for('main.index'))
-    else:
-        flash('Invalid or expired token.', 'danger')
-        return redirect(url_for('.resend_confirm_email'))
+    form = LoginForm()
+    if form.validate_on_submit() and current_user.validate_password(form.password.data):
+        confirm_login()
+        return redirect_back()
+    return render_template('auth/login.html', form=form)
 
 
 @auth_bp.route('/logout')
@@ -72,6 +78,32 @@ def register():
         flash('Confirm email sent, check your inbox.', 'info')
         return redirect(url_for('.login'))
     return render_template('auth/register.html', form=form)
+
+
+@auth_bp.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('main.index'))
+
+    if validate_token(user=current_user, token=token, operation=Operations.CONFIRM):
+        flash('Account confirmed.', 'success')
+        return redirect(url_for('main.index'))
+    else:
+        flash('Invalid or expired token.', 'danger')
+        return redirect(url_for('.resend_confirm_email'))
+
+
+@auth_bp.route('/resend-confirm-email')
+@login_required
+def resend_confirm_email():
+    if current_user.confirmed:
+        return redirect(url_for('main.index'))
+
+    token = generate_token(user=current_user, operation=Operations.CONFIRM)
+    send_confirm_email(user=current_user, token=token)
+    flash('New email sent, check your inbox.', 'info')
+    return redirect(url_for('main.index'))
 
 
 @auth_bp.route('/forget-password', methods=['GET', 'POST'])

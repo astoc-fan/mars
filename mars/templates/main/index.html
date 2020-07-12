@@ -48,12 +48,14 @@
                 <div class="card border-primary mb-3">
                     <h4 class="card-header">Settings</h4>
                     <div class="list-group list-group-flush">
+                        <a href="{{ url_for('user.index', username=current_user.username) }}" class="list-group-item list-group-item-action">
+                            User
+                        </a>
                         <a href="#" class="list-group-item list-group-item-action">
-                            User Settings
+                            Profile
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action">Role
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action disabled">Permission
+                        <a href="#" class="list-group-item list-group-item-action disabled">
+                            ...
                         </a>
                     </div>
                 </div>

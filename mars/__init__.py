@@ -4,10 +4,11 @@ import click
 from flask import Flask, render_template
 
 # from mars.blueprints.admin import admin_bp
-from mars.blueprints.auth import auth_bp
 from mars.blueprints.main import main_bp
 from mars.blueprints.auth import auth_bp
-from mars.extensions import bootstrap, db, login_manager, moment
+from mars.blueprints.user import user_bp
+from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf
+
 # from mars.models import Role, User, Photo, Tag, Follow, Notification, Comment, Collect, Permission
 from mars.models import User
 from mars.settings import config
@@ -29,6 +30,7 @@ def create_app(config_name=None):
     # register_errors(app)
     # register_shell_context(app)
     # register_template_context(app)
+
     return app
 
 
@@ -40,30 +42,35 @@ def register_extensions(app):
     bootstrap.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-    # ckeditor.init_app(app)
-    # mail.init_app(app)
+    mail.init_app(app)
+    # dropzone.init_app(app)
     moment.init_app(app)
+    whooshee.init_app(app)
+    # avatars.init_app(app)
+    csrf.init_app(app)
 
 
 def register_blueprints(app):
     app.register_blueprint(main_bp)
     # app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(user_bp, url_prefix='/user')
 
 
-# def register_shell_context(app):
-#     @app.shell_context_processor
-#     def make_shell_context():
-#         return dict(db=db, Admin=Admin, Post=Post, Category=Category, Comment=Comment)
+def register_shell_context(app):
+    @app.shell_context_processor
+    def make_shell_context():
+        return dict(db=db, User=User)
 
 
 # def register_template_context(app):
 #     @app.context_processor
 #     def make_template_context():
-#         admin = Admin.query.first()
-#         categories = Category.query.order_by(Category.name).all()
-#         links = Link.query.order_by(Link.name).all()
-#         return dict(admin=admin, categories=categories, links=links)
+#         if current_user.is_authenticated:
+#             notification_count = Notification.query.with_parent(current_user).filter_by(is_read=False).count()
+#         else:
+#             notification_count = None
+#         return dict(notification_count=notification_count)
 
 
 def register_errorhandlers(app):
@@ -115,35 +122,4 @@ def register_commands(app):
 
         click.echo('Done.')
 
-    # @app.cli.command()
-    # @click.option('--user', default=10, help='Quantity of users, default is 10.')
-    # @click.option('--follow', default=30, help='Quantity of follows, default is 30.')
-    # @click.option('--photo', default=30, help='Quantity of photos, default is 30.')
-    # @click.option('--tag', default=20, help='Quantity of tags, default is 20.')
-    # @click.option('--collect', default=50, help='Quantity of collects, default is 50.')
-    # @click.option('--comment', default=100, help='Quantity of comments, default is 100.')
-    # def forge(user, follow, photo, tag, collect, comment):
-    #     """Generate fake data."""
-    #
-    #     from albumy.fakes import fake_admin, fake_comment, fake_follow, fake_photo, fake_tag, fake_user, fake_collect
-    #
-    #     db.drop_all()
-    #     db.create_all()
-    #
-    #     click.echo('Initializing the roles and permissions...')
-    #     Role.init_role()
-    #     click.echo('Generating the administrator...')
-    #     fake_admin()
-    #     click.echo('Generating %d users...' % user)
-    #     fake_user(user)
-    #     click.echo('Generating %d follows...' % follow)
-    #     fake_follow(follow)
-    #     click.echo('Generating %d tags...' % tag)
-    #     fake_tag(tag)
-    #     click.echo('Generating %d photos...' % photo)
-    #     fake_photo(photo)
-    #     click.echo('Generating %d collects...' % photo)
-    #     fake_collect(collect)
-    #     click.echo('Generating %d comments...' % comment)
-    #     fake_comment(comment)
-    #     click.echo('Done.')
+
