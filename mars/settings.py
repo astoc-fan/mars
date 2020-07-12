@@ -17,24 +17,22 @@ class Operations:
     CHANGE_EMAIL = 'change-email'
 
 
-class BaseConfig(object):
+class BaseConfig:
+    MARS_MAIL_SUBJECT_PREFIX = '[MARS]'
+    MARS_ADMIN_EMAIL = os.getenv('MARS_ADMIN', 'stef.fan@expeditors.com')
+
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev key')
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # MAIL_SERVER = os.getenv('MAIL_SERVER')
-    # MAIL_PORT = 465
-    # MAIL_USE_SSL = True
-    # MAIL_USERNAME = os.getenv('MAIL_USERNAME')
-    # MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
-    # MAIL_DEFAULT_SENDER = ('Mars Admin', MAIL_USERNAME)
-    #
-    # BLUELOG_EMAIL = os.getenv('BLUELOG_EMAIL')
-    # BLUELOG_POST_PER_PAGE = 10
-    # BLUELOG_MANAGE_POST_PER_PAGE = 15
-    # BLUELOG_COMMENT_PER_PAGE = 15
-    # ('theme name', 'display name')
-    # BLUELOG_THEMES = {'perfect_blue': 'Perfect Blue', 'black_swan': 'Black Swan'}
+    MAIL_SERVER = os.getenv('MAIL_SERVER')
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME')
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = ('Mars Admin', MAIL_USERNAME)
+
+    WHOOSHEE_MIN_STRING_LEN = 1
 
 
 class DevelopmentConfig(BaseConfig):
