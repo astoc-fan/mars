@@ -14,3 +14,8 @@ main_bp = Blueprint('main', __name__)
 def index():
     # return render_template('mars/index.html', pagination=pagination, posts=posts)
     return render_template('main/index.html')
+
+
+@main_bp.route('/dashboard')
+def dashboard():
+    return render_template('dashboard/dashboard-baidu.html')
