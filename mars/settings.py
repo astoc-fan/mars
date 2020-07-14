@@ -25,12 +25,12 @@ class BaseConfig:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    MAIL_SERVER = os.getenv('MAIL_SERVER')
-    MAIL_PORT = 465
-    MAIL_USE_SSL = True
+    MAIL_SERVER = os.getenv('MAIL_SERVER', '10.254.14.154')
+    MAIL_PORT = 25
+    MAIL_USE_SSL = False
     MAIL_USERNAME = os.getenv('MAIL_USERNAME')
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
-    MAIL_DEFAULT_SENDER = ('Mars Admin', MAIL_USERNAME)
+    MAIL_DEFAULT_SENDER = ('expd-tsn@expeditors.com', MAIL_USERNAME)
 
     WHOOSHEE_MIN_STRING_LEN = 1
 
