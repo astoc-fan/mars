@@ -2,15 +2,16 @@ import os
 
 import click
 from flask import Flask, render_template
+from flask_login import current_user
+from flask_wtf.csrf import CSRFError
 
 # from mars.blueprints.admin import admin_bp
-from mars.blueprints.main import main_bp
+# from mars.blueprints.ajax import ajax_bp
 from mars.blueprints.auth import auth_bp
+from mars.blueprints.main import main_bp
 from mars.blueprints.user import user_bp
 from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf
-
-# from mars.models import Role, User, Photo, Tag, Follow, Notification, Comment, Collect, Permission
-from mars.models import User
+from mars.models import Role, User, Permission
 from mars.settings import config
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -27,8 +28,8 @@ def create_app(config_name=None):
     register_extensions(app)
     register_blueprints(app)
     register_commands(app)
-    # register_errors(app)
-    # register_shell_context(app)
+    register_errorhandlers(app)
+    register_shell_context(app)
     # register_template_context(app)
 
     return app
@@ -117,8 +118,8 @@ def register_commands(app):
         click.echo('Initializing the database...')
         db.create_all()
 
-        # click.echo('Initializing the roles and permissions...')
-        # Role.init_role()
+        click.echo('Initializing the roles and permissions...')
+        Role.init_role()
 
         click.echo('Done.')
 
