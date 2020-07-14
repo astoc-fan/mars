@@ -14,7 +14,7 @@ from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee
 from mars.models import Role, User, Permission
 from mars.settings import config
 
-basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+# basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
 def create_app(config_name=None):
@@ -22,6 +22,7 @@ def create_app(config_name=None):
         config_name = os.getenv('FLASK_CONFIG', 'development')
 
     app = Flask('mars')
+
     app.config.from_object(config[config_name])
 
     register_logging(app)
@@ -95,9 +96,9 @@ def register_errorhandlers(app):
     def internal_server_error(e):
         return render_template('errors/500.html'), 500
 
-    # @app.errorhandler(CSRFError)
-    # def handle_csrf_error(e):
-    #     return render_template('errors/400.html', description=e.description), 500
+    @app.errorhandler(CSRFError)
+    def handle_csrf_error(e):
+        return render_template('errors/400.html', description=e.description), 500
 
 
 def register_commands(app):

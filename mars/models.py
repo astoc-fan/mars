@@ -29,10 +29,10 @@ class Role(db.Model):
     @staticmethod
     def init_role():
         roles_permissions_map = {
-            'Locked': [],
-            'User': ['INVOICE_PROCESS', 'PRE_ALERT', 'CUSTOMER_MAINTAIN'],
-            'Superuser': ['INVOICE_PROCESS', 'PRE_ALERT', 'CUSTOMER_MAINTAIN', 'DASHBOARD'],
-            'Administrator': ['INVOICE_PROCESS', 'PRE_ALERT', 'CUSTOMER_MAINTAIN', 'DASHBOARD', 'ADMINISTER']
+            'Locked': ['FOLLOW', 'COLLECT'],
+            'User': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD'],
+            'Moderator': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD', 'MODERATE'],
+            'Administrator': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD', 'MODERATE', 'ADMINISTER']
         }
 
         for role_name in roles_permissions_map:
@@ -50,7 +50,7 @@ class Role(db.Model):
         db.session.commit()
 
 
-@whooshee.register_model('name', 'username')
+# @whooshee.register_model('name', 'username')
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, index=True)
@@ -60,7 +60,6 @@ class User(db.Model, UserMixin):
     branch = db.Column(db.String(10))
     department = db.Column(db.String(20))
     member_since = db.Column(db.DateTime, default=datetime.utcnow)
-
     confirmed = db.Column(db.Boolean, default=False)
     locked = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=True)
@@ -76,9 +75,6 @@ class User(db.Model, UserMixin):
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
-    def validate_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
     def set_role(self):
         if self.role is None:
             if self.email == current_app.config['MARS_ADMIN_EMAIL']:
@@ -86,6 +82,9 @@ class User(db.Model, UserMixin):
             else:
                 self.role = Role.query.filter_by(name='User').first()
             db.session.commit()
+
+    def validate_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def lock(self):
         self.locked = True

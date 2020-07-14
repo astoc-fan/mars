@@ -16,7 +16,7 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(1, 30)])
     email = StringField('Email', validators=[DataRequired(), Length(1, 254), Email()])
-    username = StringField('Username', validators=[DataRequired(), Length(5, 20),
+    username = StringField('Username (e.g. bbb-xxx)', validators=[DataRequired(), Length(5, 20),
                                                    Regexp('^[a-zA-Z][a-zA-Z0-9-]{4,15}$',
                                                           message='The username should contain only a-z, A-Z, 0-9 and -.')])
     password = PasswordField('Password', validators=[
