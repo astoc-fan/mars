@@ -9,9 +9,9 @@
         <p>Welcome back,{{ current_user.name }}!</p>
 
         <div class="row">
-            <div class="col-lg-4">
-                <div class="card border-primary mb-3">
-                    <h4 class="card-header">Dashboard</h4>
+            <div class="col-sm-4">
+                <div class="card bg-secondary mb-3">
+                    <h5 class="card-header">Dashboard</h5>
                     <div class="list-group list-group-flush">
                         <a href="#" class="list-group-item list-group-item-action">
                             Branch Dashboard
@@ -26,8 +26,8 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="card border-primary mb-3">
-                    <h4 class="card-header">Invoice Processing</h4>
+                <div class="card bg-secondary mb-3">
+                    <h5 class="card-header">Invoice Processing</h5>
                     <div class="list-group list-group-flush">
                         <a href="#" class="list-group-item list-group-item-action">
                             Request Tax Invoice
@@ -41,29 +41,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="card border-primary mb-3">
-                    <h4 class="card-header">Settings</h4>
-                    <div class="list-group list-group-flush">
-                        <a href="{{ url_for('user.index', username=current_user.username) }}" class="list-group-item list-group-item-action">
-                            User
-                        </a>
-                        <a href="{{ url_for('user.edit_profile') }}" class="list-group-item list-group-item-action">
-                            Edit Profile
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action disabled">
-                            ...
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
     {% else %}
         <div class="jumbotron">
             <h1 class="display-3">Hello Mars.</h1>
             <h4 class="lead">&nbsp;Welcome landing, Please join us now!</h4>
-            <p><a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Register</a>
-                <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}">Login</a></p>
+            <hr class="my-4">
+            <a class="btn btn-outline-primary btn-lg" href="{{ url_for('auth.login') }}">Login</a>&nbsp;&nbsp;
+            <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Register</a>
         </div>
 
     {% endif %}
