@@ -47,8 +47,7 @@
                                     <span class="oi oi-cog"></span> Settings
                                 </a>
                                 {% if current_user.can('MODERATE') %}
-                                    {# <a class="dropdown-item" href="{{ url_for('admin.index') }}">#}
-                                    <a class="dropdown-item" href="#">
+                                    <a class="dropdown-item" href="{{ url_for('admin.index') }}">
                                         <span class="oi oi-dashboard"></span> Admin
                                     </a>
                                 {% endif %}

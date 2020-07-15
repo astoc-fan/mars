@@ -5,7 +5,7 @@ from flask import Flask, render_template
 from flask_login import current_user
 from flask_wtf.csrf import CSRFError
 
-# from mars.blueprints.admin import admin_bp
+from mars.blueprints.admin import admin_bp
 # from mars.blueprints.ajax import ajax_bp
 from mars.blueprints.auth import auth_bp
 from mars.blueprints.main import main_bp
@@ -54,7 +54,7 @@ def register_extensions(app):
 
 def register_blueprints(app):
     app.register_blueprint(main_bp)
-    # app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp, url_prefix='/user')
 

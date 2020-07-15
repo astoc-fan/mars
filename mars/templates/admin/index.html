@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/nav.html' import render_breadcrumb_item %}
+
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('admin.index', 'Admin Home') }}
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card border-secondary mb-3">
+                <div class="card-header"><span class="oi oi-people"></span> Users</div>
+                <div class="card-body">
+                    <h4 class="card-title">Total: {{ user_count|default('0') }}</h4>
+                    <p class="card-text">Locked: {{ locked_user_count|default('0') }}
+                        Blocked: {{ blocked_user_count|default('0') }}</p>
+                    <a class="btn btn-primary text-white" href="{{ url_for('.manage_user') }}">Manage</a>
+                    <a class="btn btn-secondary text-white" href="{{ url_for('.manage_user', filter='locked') }}">View
+                        Locked</a>
+                    <a class="btn btn-secondary text-white" href="{{ url_for('.manage_user', filter='blocked') }}">View
+                        Blocked</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

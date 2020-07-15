@@ -18,6 +18,8 @@ class Operations:
 
 
 class BaseConfig:
+    MARS_USER_PER_PAGE = 20
+    MARS_MANAGE_USER_PER_PAGE = 30
     MARS_MAIL_SUBJECT_PREFIX = '[MARS]'
     MARS_ADMIN_EMAIL = os.getenv('MARS_ADMIN', 'stef.fan@expeditors.com')
 
