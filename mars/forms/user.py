@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, PasswordField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
 
-from mars.models import User
+from mars.models import User, Department
 
 
 class EditProfileForm(FlaskForm):
@@ -12,10 +12,14 @@ class EditProfileForm(FlaskForm):
                                                    Regexp('^[a-zA-Z][a-zA-Z0-9-]{4,15}$',
                                                           message='This should contain only a-z, A-Z, 0-9 and -.')])
     branch = StringField('Branch', validators=[DataRequired(), Length(0, 10)])
-    # department = StringField('Department', validators=[DataRequired(), Length(0, 20)])
-    department = SelectField('Department', validators=[DataRequired()],
-                             choices=[('IS', 'IS'), ('op', 'Operation')])
+    department = SelectField('Department', coerce=int)
     submit = SubmitField()
+
+    def __init__(self, user, *args, **kwargs):
+        super(FlaskForm, self).__init__(*args, **kwargs)
+        self.department.choices = [(department.id, department.name)
+                                   for department in Department.query.order_by(Department.name).all()]
+        self.user = user
 
     def validate_username(self, field):
         if field.data != current_user.username and User.query.filter_by(username=field.data).first():

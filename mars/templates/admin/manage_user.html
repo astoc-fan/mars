@@ -11,12 +11,25 @@
         </ol>
     </nav>
     <div class="page-header">
-        <h1>Users
+        <h2>Users
             <small class="text-muted">{{ pagination.total }}</small>
-        </h1>
+        </h2>
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Filter </a>
+                <a class="nav-link disabled" href="#">Filter Branch</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.args.get('filter', 'all') == 'all' %}active{% endif %}"
+                   href="{{ url_for('admin.manage_user', filter='all') }}">All</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.args.get('filter') == 'TSN' %}active{% endif %}"
+                   href="{{ url_for('admin.manage_user', filter='TSN') }}">TSN</a>
+            </li>
+        </ul>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Filter Role</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {% if request.args.get('filter', 'all') == 'all' %}active{% endif %}"
@@ -41,67 +54,65 @@
         </ul>
     </div>
     {% if users %}
-        <table class="table table-striped">
+        <table class="table table-hover table-striped">
             <thead>
             <tr>
-
                 <th>Name/username</th>
                 <th>Role</th>
                 <th>Branch</th>
                 <th>Department</th>
                 <th>Date</th>
-
                 <th>Actions</th>
             </tr>
             </thead>
             {% for user in users %}
                 <tr>
-
-                    <td>{{ user.name }}<br>{{ user.username }}</td>
+                    <td>{{ user.name }} / {{ user.username }}</td>
                     <td>{{ user.role.name }}</td>
                     <td>{{ user.branch }}</td>
                     <td>{{ user.department }}</td>
                     <td>{{ moment(user.member_since).format('LL') }}</td>
-
                     <td>
-                    {% if user.role.name not in ['Administrator', 'Moderator'] %}
-                        {% if user.locked %}
-                            <form class="inline" action="{{ url_for('admin.unlock_user', user_id=user.id) }}"
-                                  method="post">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <input type="submit" onclick="return confirm('Are you sure?');"
-                                       class="btn btn-secondary btn-sm" value="Unlock">
-                            </form>
-                        {% else %}
-                            <form class="inline" action="{{ url_for('admin.lock_user', user_id=user.id) }}"
-                                  method="post">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <input type="submit" onclick="return confirm('Are you sure?');"
-                                       class="btn btn-warning btn-sm" value="Lock">
-                            </form>
+                        {% if user.role.name not in ['Administrator', 'Moderator'] %}
+                            <div class="row">
+                            {% if user.locked %}
+                                <form class="inline" action="{{ url_for('admin.unlock_user', user_id=user.id) }}"
+                                      method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="submit" onclick="return confirm('Are you sure?');"
+                                           class="btn btn-outline-success btn-sm" value="Unlock">
+                                </form>
+                            {% else %}
+                                <form class="inline" action="{{ url_for('admin.lock_user', user_id=user.id) }}"
+                                      method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="submit" onclick="return confirm('Are you sure?');"
+                                           class="btn btn-outline-primary btn-sm" value="Lock">
+                                </form>
+                            {% endif %}
+                            {% if user.active %}
+                                <form class="inline" action="{{ url_for('admin.block_user', user_id=user.id) }}"
+                                      method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="submit" onclick="return confirm('Are you sure?');"
+                                           class="btn btn-outline-primary btn-sm" value="Block">
+                                </form>
+                            {% else %}
+                                <form class="inline" action="{{ url_for('admin.unblock_user', user_id=user.id) }}"
+                                      method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="submit" onclick="return confirm('Are you sure?');"
+                                           class="btn btn-outline-success btn-sm" value="Unblock">
+                                </form>
+                            {% endif %}
                         {% endif %}
-                        {% if user.active %}
-                            <form class="inline" action="{{ url_for('admin.block_user', user_id=user.id) }}"
-                                  method="post">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <input type="submit" onclick="return confirm('Are you sure?');"
-                                       class="btn btn-warning btn-sm" value="Block">
-                            </form>
-                        {% else %}
-                            <form class="inline" action="{{ url_for('admin.unblock_user', user_id=user.id) }}"
-                                  method="post">
-                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <input type="submit" onclick="return confirm('Are you sure?');"
-                                       class="btn btn-secondary btn-sm" value="Unblock">
-                            </form>
-                        {% endif %}
-                    {% endif %}
                         <a class="btn btn-light btn-sm" href="mailto:{{ user.email }}">Email</a>
                         {% if current_user.is_admin %}
-                            <a class="btn btn-warning btn-sm"
+                            <a class="btn btn-outline-primary btn-sm"
                                href="{{ url_for('admin.edit_profile_admin', user_id=user.id) }}">Edit
-                                profile</a>
+                            </a>
                         {% endif %}
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

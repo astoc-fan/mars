@@ -3,12 +3,13 @@ from wtforms import ValidationError
 from wtforms.validators import DataRequired, Length, Email
 
 from mars.forms.user import EditProfileForm
-from mars.models import User, Role
+from mars.models import User, Role, Department
 
 
 class EditProfileAdminForm(EditProfileForm):
     email = StringField('Email', validators=[DataRequired(), Length(1, 254), Email()])
     role = SelectField('Role', coerce=int)
+    department = SelectField('Department',coerce=int)
     active = BooleanField('Active')
     confirmed = BooleanField('Confirmed')
     submit = SubmitField()
@@ -17,6 +18,8 @@ class EditProfileAdminForm(EditProfileForm):
         super(EditProfileAdminForm, self).__init__(*args, **kwargs)
         self.role.choices = [(role.id, role.name)
                              for role in Role.query.order_by(Role.name).all()]
+        self.department.choices = [(department.id, department.name)
+                                   for department in Department.query.order_by(Department.name).all()]
         self.user = user
 
     def validate_username(self, field):

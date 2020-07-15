@@ -4,7 +4,7 @@ from flask_login import login_required
 from mars.decorators import admin_required, permission_required
 from mars.extensions import db
 from mars.forms.admin import EditProfileAdminForm
-from mars.models import Role, User
+from mars.models import Role, User, Department
 from mars.utils import redirect_back
 
 admin_bp = Blueprint('admin', __name__)
@@ -15,10 +15,11 @@ admin_bp = Blueprint('admin', __name__)
 @permission_required('MODERATE')
 def index():
     user_count = User.query.count()
+    department_count = Department.query.count()
     locked_user_count = User.query.filter_by(locked=True).count()
     blocked_user_count = User.query.filter_by(active=False).count()
     return render_template('admin/index.html', user_count=user_count, locked_user_count=locked_user_count,
-                           blocked_user_count=blocked_user_count)
+                           blocked_user_count=blocked_user_count,department_count=department_count)
 
 
 @admin_bp.route('/profile/<int:user_id>', methods=['GET', 'POST'])
@@ -37,7 +38,6 @@ def edit_profile_admin(user_id):
         user.department = form.department.data
         user.confirmed = form.confirmed.data
         user.active = form.active.data
-        user.location = form.location.data
         user.username = form.username.data
         user.email = form.email.data
         db.session.commit()
@@ -47,7 +47,6 @@ def edit_profile_admin(user_id):
     form.role.data = user.role_id
     form.branch.data = user.branch
     form.department.data = user.department
-    form.location.data = user.location
     form.username.data = user.username
     form.email.data = user.email
     form.confirmed.data = user.confirmed
@@ -119,6 +118,8 @@ def manage_user():
         filtered_users = User.query.filter_by(role=administrator)
     elif filter_rule == 'moderator':
         filtered_users = User.query.filter_by(role=moderator)
+    elif filter_rule == 'TSN':
+        filtered_users = User.query.filter_by(branch='TSN')
     else:
         filtered_users = User.query
 
@@ -126,3 +127,10 @@ def manage_user():
     users = pagination.items
     return render_template('admin/manage_user.html', pagination=pagination, users=users)
 
+
+@admin_bp.route('/manage/department')
+@login_required
+@permission_required('MODERATE')
+def manage_departments():
+    departments = Department.query.all()
+    return render_template('admin/manage_department.html', departments=departments)

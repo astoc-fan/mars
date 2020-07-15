@@ -58,7 +58,6 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(30))
     branch = db.Column(db.String(10))
-    department = db.Column(db.String(20))
     member_since = db.Column(db.DateTime, default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
     locked = db.Column(db.Boolean, default=False)
@@ -67,6 +66,10 @@ class User(db.Model, UserMixin):
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 
     role = db.relationship('Role', back_populates='users')
+    department = db.Column(db.String(20))
+    # department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    #
+    # department = db.relationship('Department', back_populates='users')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -115,3 +118,10 @@ class User(db.Model, UserMixin):
     def can(self, permission_name):
         permission = Permission.query.filter_by(name=permission_name).first()
         return permission is not None and self.role is not None and permission in self.role.permissions
+
+
+class Department(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), unique=True)
+    # users = db.relationship('User', back_populates='department')
+

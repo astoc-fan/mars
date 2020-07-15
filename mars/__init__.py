@@ -11,7 +11,7 @@ from mars.blueprints.auth import auth_bp
 from mars.blueprints.main import main_bp
 from mars.blueprints.user import user_bp
 from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf
-from mars.models import Role, User, Permission
+from mars.models import Role, User, Permission, Department
 from mars.settings import config
 
 # basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))

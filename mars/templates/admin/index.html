@@ -17,11 +17,16 @@
                     <h4 class="card-title">Total: {{ user_count|default('0') }}</h4>
                     <p class="card-text">Locked: {{ locked_user_count|default('0') }}
                         Blocked: {{ blocked_user_count|default('0') }}</p>
-                    <a class="btn btn-primary text-white" href="{{ url_for('.manage_user') }}">Manage</a>
-                    <a class="btn btn-secondary text-white" href="{{ url_for('.manage_user', filter='locked') }}">View
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('.manage_user') }}">Manage</a>
+                    <a class="btn btn-secondary btn-sm" href="{{ url_for('.manage_user', filter='locked') }}">View
                         Locked</a>
-                    <a class="btn btn-secondary text-white" href="{{ url_for('.manage_user', filter='blocked') }}">View
+                    <a class="btn btn-secondary btn-sm" href="{{ url_for('.manage_user', filter='blocked') }}">View
                         Blocked</a>
+                </div>
+                <div class="card-header"><span class="oi oi-people"></span> Departments</div>
+                <div class="card-body">
+                    <h4 class="card-title">Total: {{ department_count|default('0') }}</h4>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('.manage_departments') }}">Manage</a>
                 </div>
             </div>
         </div>
