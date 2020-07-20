@@ -18,4 +18,4 @@ def index():
 
 @main_bp.route('/dashboard')
 def dashboard():
-    return render_template('dashboard/dashboard-baidu.html')
+    return render_template('dashboard/dashboard.html')

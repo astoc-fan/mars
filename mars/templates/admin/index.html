@@ -10,7 +10,7 @@
         </ol>
     </nav>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <div class="card border-secondary mb-3">
                 <div class="card-header"><span class="oi oi-people"></span> Users</div>
                 <div class="card-body">
@@ -23,6 +23,10 @@
                     <a class="btn btn-secondary btn-sm" href="{{ url_for('.manage_user', filter='blocked') }}">View
                         Blocked</a>
                 </div>
+            </div>
+        </div>
+         <div class="col-lg-4">
+            <div class="card border-secondary mb-3">
                 <div class="card-header"><span class="oi oi-people"></span> Departments</div>
                 <div class="card-body">
                     <h4 class="card-title">Total: {{ department_count|default('0') }}</h4>
