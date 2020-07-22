@@ -5,7 +5,7 @@ from flask_login import login_required, current_user, fresh_login_required, logo
 from mars.emails import send_change_email_email
 from mars.extensions import db
 from mars.forms.user import EditProfileForm, ChangePasswordForm, ChangeEmailForm, DeleteAccountForm
-from mars.models import User
+from mars.models import User, Department
 from mars.settings import Operations
 from mars.utils import generate_token, validate_token
 
