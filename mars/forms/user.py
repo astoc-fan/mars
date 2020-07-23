@@ -15,6 +15,11 @@ class EditProfileForm(FlaskForm):
     department = SelectField('Department', coerce=int)
     submit = SubmitField()
 
+    def __init__(self):
+        super(EditProfileForm, self).__init__()
+        self.department.choices = [(department.id, department.name)
+                                   for department in Department.query.order_by(Department.name).all()]
+
     def validate_username(self, field):
         if field.data != current_user.username and User.query.filter_by(username=field.data).first():
             raise ValidationError('The username is already in use.')

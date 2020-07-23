@@ -29,12 +29,13 @@ def index(username):
 @login_required
 def edit_profile():
     form = EditProfileForm()
-    department = Department.query.get(form.department.data)
+
     if form.validate_on_submit():
         current_user.name = form.name.data
         current_user.username = form.username.data
         current_user.branch = form.branch.data
-        current_user.department = form.department.data
+        department = Department.query.get(form.department.data)
+        current_user.department = department
         db.session.commit()
         flash('Profile updated.', 'success')
         return redirect(url_for('.index', username=current_user.username))
