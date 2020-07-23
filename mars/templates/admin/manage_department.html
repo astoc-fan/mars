@@ -1,36 +1,67 @@
 {% extends 'admin/index.html' %}
 {% from 'bootstrap/pagination.html' import render_pagination %}
+{% from 'bootstrap/form.html' import render_form %}
 
 {% block title %}Manage Department{% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        {{ render_breadcrumb_item('admin.index', 'Admin Home') }}
-        {{ render_breadcrumb_item('admin.manage_departments', 'Manage Departments') }}
-    </ol>
-</nav>
-<div class="page-header">
-    <h2>Departments
-        <small class="text-muted">{{ departments.total }}</small>
-    </h2>
-    {% if departments %}
-        <table class="table table-hover table-striped">
-            <thead>
-            <tr>
-                <th>Department</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            {% for department in departments %}
-                <tr>
-                    <td>{{ department.name }}</td>
-                    <td>edit</td>
-                </tr>
-            {% endfor %}
-        </table>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('admin.index', 'Admin Home') }}
+            {{ render_breadcrumb_item('admin.manage_departments', 'Manage Departments') }}
+        </ol>
+    </nav>
+    <div class="page-header">
+        <h2>Departments
+            <small class="text-muted">{{ department_count }}</small>
+        </h2>
+        <!-- Button trigger modal -->
+        <p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newDept">
+                New Department
+            </button>
+            <a class="btn btn-primary" href="{{ url_for('admin.new_department') }}">New Department</a>
+        </p>
+        <!-- Modal -->
+        <div class="modal fade" id="newDept" tabindex="-1" role="dialog" aria-labelledby="newDept"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Department</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ....
+{#                        {{ render_form(form) }}#}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    {% else %}
-        <div class="tip"><h5>No department.</h5></div>
-    {% endif %}
+        {% if departments %}
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                {% for department in departments %}
+                    <tr>
+                        <td>{{ department.name }}</td>
+                        <td>edit</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        {% else %}
+            <div class="tip"><h5>No department.</h5></div>
+        {% endif %}
 {% endblock %}

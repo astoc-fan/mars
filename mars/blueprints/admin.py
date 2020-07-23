@@ -1,9 +1,9 @@
-from flask import render_template, flash, Blueprint, request, current_app
-from flask_login import login_required
+from flask import render_template, flash, Blueprint, request, current_app, redirect, url_for
+from flask_login import login_required, current_user
 
 from mars.decorators import admin_required, permission_required
 from mars.extensions import db
-from mars.forms.admin import EditProfileAdminForm
+from mars.forms.admin import EditProfileAdminForm, NewDepartmentForm
 from mars.models import Role, User, Department
 from mars.utils import redirect_back
 
@@ -19,7 +19,7 @@ def index():
     locked_user_count = User.query.filter_by(locked=True).count()
     blocked_user_count = User.query.filter_by(active=False).count()
     return render_template('admin/index.html', user_count=user_count, locked_user_count=locked_user_count,
-                           blocked_user_count=blocked_user_count,department_count=department_count)
+                           blocked_user_count=blocked_user_count, department_count=department_count)
 
 
 @admin_bp.route('/profile/<int:user_id>', methods=['GET', 'POST'])
@@ -133,5 +133,19 @@ def manage_user():
 @login_required
 @permission_required('MODERATE')
 def manage_departments():
+    department_count = Department.query.count()
     departments = Department.query.all()
-    return render_template('admin/manage_department.html', departments=departments)
+    return render_template('admin/manage_department.html', departments=departments, department_count=department_count)
+
+
+@admin_bp.route('/manage/new_department', methods=['GET', 'POST'])
+@login_required
+@permission_required('MODERATE')
+def new_department():
+    form = NewDepartmentForm()
+    if form.validate_on_submit():
+        department = form.department.data
+        new_dept = Department(name=department)
+        db.session.add(new_dept)
+        db.session.commit()
+    return render_template('admin/new_department.html', form=form)

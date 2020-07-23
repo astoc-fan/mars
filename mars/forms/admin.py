@@ -1,7 +1,7 @@
 from wtforms import StringField, SelectField, BooleanField, SubmitField
 from wtforms import ValidationError
 from wtforms.validators import DataRequired, Length, Email
-
+from flask_wtf import FlaskForm
 from mars.forms.user import EditProfileForm
 from mars.models import User, Role, Department
 
@@ -29,3 +29,12 @@ class EditProfileAdminForm(EditProfileForm):
     def validate_email(self, field):
         if field.data != self.user.email and User.query.filter_by(email=field.data.lower()).first():
             raise ValidationError('The email is already in use.')
+
+
+class NewDepartmentForm(FlaskForm):
+    department = StringField('Department Name', validators=[DataRequired(), Length(1, 19)])
+    submit = SubmitField()
+
+    def validate_department(self, field):
+        if field.data != self.department.name and Department.query.filter_by(name=field.data).first():
+            raise ValidationError('The department is already exist.')
