@@ -15,6 +15,7 @@ user_bp = Blueprint('user', __name__)
 @user_bp.route('/<username>')
 def index(username):
     user = User.query.filter_by(username=username).first_or_404()
+    department = Department.query.filter_by(id=user.department_id).first_or_404()
     if user == current_user and user.locked:
         flash('Your account is locked.', 'danger')
 
@@ -28,6 +29,7 @@ def index(username):
 @login_required
 def edit_profile():
     form = EditProfileForm()
+    department = Department.query.get(form.department.data)
     if form.validate_on_submit():
         current_user.name = form.name.data
         current_user.username = form.username.data
@@ -39,7 +41,7 @@ def edit_profile():
     form.name.data = current_user.name
     form.username.data = current_user.username
     form.branch.data = current_user.branch
-    form.department.data = current_user.department
+    form.department.data = current_user.department_id
     return render_template('user/settings/edit_profile.html', form=form)
 
 

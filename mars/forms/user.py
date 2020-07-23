@@ -10,7 +10,7 @@ class EditProfileForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(), Length(1, 30)])
     username = StringField('Username', validators=[DataRequired(), Length(5, 20),
                                                    Regexp('^[a-zA-Z][a-zA-Z0-9-]{4,15}$',
-                                                          message='This should contain only a-z, A-Z, 0-9 and -.')])
+                                                    message='This should contain only a-z, A-Z, 0-9 and -.')])
     branch = StringField('Branch', validators=[DataRequired(), Length(0, 10)])
     department = SelectField('Department', coerce=int)
     submit = SubmitField()

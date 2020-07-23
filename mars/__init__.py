@@ -2,9 +2,8 @@ import os
 
 import click
 from flask import Flask, render_template
-from flask_login import current_user
 from flask_wtf.csrf import CSRFError
-
+from flask_migrate import Migrate
 from mars.blueprints.admin import admin_bp
 # from mars.blueprints.ajax import ajax_bp
 from mars.blueprints.auth import auth_bp
@@ -14,7 +13,8 @@ from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee
 from mars.models import Role, User, Permission, Department
 from mars.settings import config
 
-# basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
+basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
 def create_app(config_name=None):

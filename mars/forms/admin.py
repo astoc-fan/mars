@@ -9,7 +9,7 @@ from mars.models import User, Role, Department
 class EditProfileAdminForm(EditProfileForm):
     email = StringField('Email', validators=[DataRequired(), Length(1, 254), Email()])
     role = SelectField('Role', coerce=int)
-    department = SelectField('Department',coerce=int)
+    department = SelectField('Department', coerce=int)
     active = BooleanField('Active')
     confirmed = BooleanField('Confirmed')
     submit = SubmitField()

@@ -31,11 +31,12 @@ def edit_profile_admin(user_id):
     if form.validate_on_submit():
         user.name = form.name.data
         role = Role.query.get(form.role.data)
+        department = Department.query.get(form.department.data)
         if role.name == 'Locked':
             user.lock()
         user.role = role
         user.branch = form.branch.data
-        user.department = form.department.data
+        user.department = department
         user.confirmed = form.confirmed.data
         user.active = form.active.data
         user.username = form.username.data
@@ -46,7 +47,7 @@ def edit_profile_admin(user_id):
     form.name.data = user.name
     form.role.data = user.role_id
     form.branch.data = user.branch
-    form.department.data = user.department
+    form.department.data = user.department_id
     form.username.data = user.username
     form.email.data = user.email
     form.confirmed.data = user.confirmed

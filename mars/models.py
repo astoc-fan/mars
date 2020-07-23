@@ -66,14 +66,17 @@ class User(db.Model, UserMixin):
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 
     role = db.relationship('Role', back_populates='users')
-    department = db.Column(db.String(20))
-    # department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
-    #
-    # department = db.relationship('Department', back_populates='users')
+
+    department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    department = db.relationship('Department', back_populates='users')
+
+    def __repr__(self):
+        return self.name
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         self.set_role()
+        self.set_department()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -84,6 +87,14 @@ class User(db.Model, UserMixin):
                 self.role = Role.query.filter_by(name='Administrator').first()
             else:
                 self.role = Role.query.filter_by(name='User').first()
+            db.session.commit()
+
+    def set_department(self):
+        if self.department is None:
+            if self.email == current_app.config['MARS_ADMIN_EMAIL']:
+                self.department = Department.query.filter_by(name='IS').first()
+            else:
+                self.role = Role.query.filter_by(name='Operation').first()
             db.session.commit()
 
     def validate_password(self, password):
@@ -123,5 +134,8 @@ class User(db.Model, UserMixin):
 class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=True)
-    # users = db.relationship('User', back_populates='department')
+    users = db.relationship('User', back_populates='department')
+
+    def __repr__(self):
+        return self.name
 
