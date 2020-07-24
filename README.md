@@ -16,3 +16,8 @@
 `'Superuser': ['INVOICE_PROCESS', 'PRE_ALERT', 'CUSTOMER_MAINTAIN', 'DASHBOARD'],`
 
 `'Administrator': ['INVOICE_PROCESS', 'PRE_ALERT', 'CUSTOMER_MAINTAIN', 'DASHBOARD', 'ADMINISTER']`
+
+## Migrate DB
+python migrate.py db init
+python migrate.py db migrate
+python migrate.py db upgrade

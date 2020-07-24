@@ -7,7 +7,6 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_whooshee import Whooshee
 from flask_wtf import CSRFProtect
-from flask_migrate import Migrate
 
 
 bootstrap = Bootstrap()

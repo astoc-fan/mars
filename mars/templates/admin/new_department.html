@@ -5,6 +5,13 @@
 {% block title %}New Department{% endblock %}
 
 {% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('admin.index', 'Admin Home') }}
+            {{ render_breadcrumb_item('admin.manage_departments', 'Manage Departments') }}
+            {{ render_breadcrumb_item('admin.new_department', 'New Department') }}
+        </ol>
+    </nav>
     <div class="jumbotron">
         <div class="row">
             <div class="col-md-4">

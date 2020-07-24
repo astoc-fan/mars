@@ -3,7 +3,6 @@ import os
 import click
 from flask import Flask, render_template
 from flask_wtf.csrf import CSRFError
-from flask_migrate import Migrate
 from mars.blueprints.admin import admin_bp
 # from mars.blueprints.ajax import ajax_bp
 from mars.blueprints.auth import auth_bp
@@ -123,5 +122,4 @@ def register_commands(app):
         Role.init_role()
 
         click.echo('Done.')
-
 

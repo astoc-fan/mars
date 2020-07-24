@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from mars.decorators import admin_required, permission_required
 from mars.extensions import db
-from mars.forms.admin import EditProfileAdminForm, NewDepartmentForm
+from mars.forms.admin import EditProfileAdminForm, NewDepartmentForm, EditDepartmentForm
 from mars.models import Role, User, Department
 from mars.utils import redirect_back
 
@@ -149,3 +149,21 @@ def new_department():
         db.session.add(new_dept)
         db.session.commit()
     return render_template('admin/new_department.html', form=form)
+
+
+@admin_bp.route('/department/<int:department_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_department(department_id):
+    department = Department.query.get_or_404(department_id)
+    form = EditDepartmentForm(department=department)
+    if form.validate_on_submit():
+        department.name = form.department.data
+        db.session.commit()
+        flash('Department updated.', 'success')
+        return redirect_back()
+    form.department.data = department.name
+    return render_template('admin/edit_department.html', form=form, department=department)
+
+
+

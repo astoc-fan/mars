@@ -17,9 +17,9 @@
         </h2>
         <!-- Button trigger modal -->
         <p>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newDept">
-                New Department
-            </button>
+            {#            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newDept">#}
+            {#                New Department#}
+            {#            </button>#}
             <a class="btn btn-primary" href="{{ url_for('admin.new_department') }}">New Department</a>
         </p>
         <!-- Modal -->
@@ -56,7 +56,13 @@
                 {% for department in departments %}
                     <tr>
                         <td>{{ department.name }}</td>
-                        <td>edit</td>
+                        <td>
+                            {% if current_user.is_admin %}
+                                <a class="btn btn-outline-primary btn-sm"
+                                   href="{{ url_for('admin.edit_department', department_id=department.id) }}">Edit
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </table>

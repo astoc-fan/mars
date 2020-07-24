@@ -8,18 +8,16 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             {{ render_breadcrumb_item('admin.index', 'Admin Home') }}
-            {{ render_breadcrumb_item('admin.manage_user', 'Manage User') }}
-            {{ render_breadcrumb_item('admin.edit_profile_admin', 'Edit Profile') }}
+            {{ render_breadcrumb_item('admin.manage_departments', 'Manage Department') }}
+            {{ render_breadcrumb_item('admin.edit_department', 'Edit Department') }}
         </ol>
     </nav>
     <div class="page-header">
-        <h2>Edit profile
-            <a class="float-right btn btn-light" href="{{ url_for('user.index', username=user.username) }}">Return
-                {{ user.username }}'s homepage</a>
+        <h2>Edit Department
         </h2>
     </div>
     <div class="card w-100 bg-light">
-{#        <h3 class="card-header">Edit Profile</h3>#}
+{#        <h3 class="card-header">Edit Department</h3>#}
         <div class="card-body">
             {{ render_form(form) }}
         </div>
