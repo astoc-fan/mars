@@ -35,6 +35,7 @@ def create_app(config_name=None):
     return app
 
 
+
 def register_logging(app):
     pass
 
