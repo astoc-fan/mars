@@ -27,31 +27,21 @@
                    href="{{ url_for('admin.manage_user', filter='TSN') }}">TSN</a>
             </li>
         </ul>
+
         <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Filter Role</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.args.get('filter', 'all') == 'all' %}active{% endif %}"
-                   href="{{ url_for('admin.manage_user', filter='all') }}">All</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.args.get('filter') == 'locked' %}active{% endif %}"
-                   href="{{ url_for('admin.manage_user', filter='locked') }}">Locked</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.args.get('filter') == 'blocked' %}active{% endif %}"
-                   href="{{ url_for('admin.manage_user', filter='blocked') }}">Blocked</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.args.get('filter') == 'administrator' %}active{% endif %}"
-                   href="{{ url_for('admin.manage_user', filter='administrator') }}">Administrator</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.args.get('filter') == 'moderator' %}active{% endif %}"
-                   href="{{ url_for('admin.manage_user', filter='moderator') }}">Moderator</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                   aria-expanded="false">Filter Role</a>
+                <div class="dropdown-menu" style="">
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_user', filter='all') }}">All</a>
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_user', filter='locked') }}">Locked</a>
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_user', filter='blocked') }}">Blocked</a>
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_user', filter='administrator') }}">Administrator</a>
+                    <a class="dropdown-item" href="{{ url_for('admin.manage_user', filter='moderator') }}">Moderator</a>
+                </div>
             </li>
         </ul>
+
     </div>
     {% if users %}
         <table class="table table-hover table-striped">
@@ -106,10 +96,12 @@
                                 </form>
                             {% endif %}
                         {% endif %}
-                        <a class="btn btn-light btn-sm" href="mailto:{{ user.email }}">Email</a>
+                        <a class="btn btn-light btn-sm" href="mailto:{{ user.email }}"><span
+                                class="fas fa-envelope"></span></a>
                         {% if current_user.is_admin %}
                             <a class="btn btn-outline-primary btn-sm"
-                               href="{{ url_for('admin.edit_profile_admin', user_id=user.id) }}">Edit
+                               href="{{ url_for('admin.edit_profile_admin', user_id=user.id) }}"><span
+                                    class="fas fa-edit"></span>
                             </a>
                         {% endif %}
                         </div>
