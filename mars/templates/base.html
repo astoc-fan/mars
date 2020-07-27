@@ -11,6 +11,10 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.css') }}">
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table-locale-all.js') }}"></script>
         {{ fontawesome_html() }}
     {% endblock head %}
 </head>
@@ -96,10 +100,8 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+{#    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>#}
     {{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-table/dist/locale/bootstrap-table-zh-CN.js') }}"></script>
 {% endblock %}
 </body>
 </html>

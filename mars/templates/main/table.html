@@ -1,42 +1,68 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Hello, Bootstrap Table!</title>
+{% extends 'base.html' %}
+{% block title %}table-test{% endblock %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.css') }}">
 
-</head>
-<body>
-<table class="table table-bordered" data-toggle="table">
-    <thead>
-    <tr>
-        <th data-sortable="true">Item ID</th>
-        <th>Item Name</th>
-        <th>Item Price</th>
+{% block content %}
+
+<table class="table table-bordered"
+  data-toggle="table"
+  data-search="true"
+  data-show-columns="true">
+  <thead>
+    <tr class="tr-class-1">
+      <th data-sortable="true" data-field="name" rowspan="2" data-valign="middle">Name</th>
+      <th colspan="3">Detail</th>
     </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>Item 1</td>
-        <td>$1</td>
+    <tr class="tr-class-2">
+      <th data-sortable="true" data-field="star">Stars</th>
+      <th data-field="forks">Forks</th>
+      <th data-field="description">Description</th>
     </tr>
-    <tr>
-        <td>2</td>
-        <td>Item 2</td>
-        <td>$2</td>
+  </thead>
+  <tbody>
+    <tr id="tr-id-1" class="tr-class-1" data-title="bootstrap table" data-object='{"key": "value"}'>
+      <td id="td-id-1" class="td-class-1" data-title="bootstrap table">
+        <a href="https://github.com/wenzhixin/bootstrap-table" target="_blank">bootstrap-table</a>
+      </td>
+      <td data-value="526">8827</td>
+      <td data-text="122">3603</td>
+      <td data-i18n="Description">An extended Bootstrap table with radio, checkbox, sort, pagination, and other added features. (supports twitter bootstrap v2 and v3)
+      </td>
     </tr>
-    </tbody>
+    <tr id="tr-id-2" class="tr-class-2">
+      <td id="td-id-2" class="td-class-2">
+        <a href="https://github.com/wenzhixin/multiple-select" target="_blank">multiple-select</a>
+      </td>
+      <td>1615</td>
+      <td>623</td>
+      <td>A jQuery plugin to select multiple elements with checkboxes :)
+      </td>
+    </tr>
+    <tr id="tr-id-3" class="tr-class-3">
+      <td id="td-id-3" class="td-class-3">
+        <a href="https://github.com/wenzhixin/bootstrap-show-password" target="_blank">bootstrap-show-password</a>
+      </td>
+      <td>220</td>
+      <td>85</td>
+      <td>Show/hide password plugin for twitter bootstrap.
+      </td>
+    </tr>
+    <tr id="tr-id-4" class="tr-class-4">
+      <td id="td-id-4" class="td-class-4">
+        <a href="https://github.com/wenzhixin/bootstrap-table-examples" target="_blank">bootstrap-table-examples</a>
+      </td>
+      <td>1734</td>
+      <td>1532</td>
+      <td>Bootstrap Table Examples</td>
+    </tr>
+    <tr id="tr-id-5" class="tr-class-5">
+      <td id="td-id-5" class="td-class-5">
+        <a href="https://github.com/wenzhixin/scutech-redmine" target="_blank">scutech-redmine</a>
+      <td>24</td>
+      <td>18</td>
+      <td>Redmine notification tools for chrome extension.</td>
+    </tr>
+  </tbody>
 </table>
 
-<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-<script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
-</body>
-</html>
+{% endblock %}

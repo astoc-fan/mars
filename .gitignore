@@ -150,3 +150,4 @@ cython_debug/
 
 /whooshee/
 /migrations/
+!/mars/static/bootstrap-table/

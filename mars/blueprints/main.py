@@ -23,4 +23,4 @@ def dashboard():
 
 @main_bp.route('/table')
 def table():
-    return  render_template('main/table.html')
+    return render_template('main/test2.html')
