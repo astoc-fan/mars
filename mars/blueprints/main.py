@@ -19,3 +19,8 @@ def index():
 @main_bp.route('/dashboard')
 def dashboard():
     return render_template('dashboard/dashboard.html')
+
+
+@main_bp.route('/table')
+def table():
+    return  render_template('main/table.html')

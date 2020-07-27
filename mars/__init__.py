@@ -8,10 +8,9 @@ from mars.blueprints.admin import admin_bp
 from mars.blueprints.auth import auth_bp
 from mars.blueprints.main import main_bp
 from mars.blueprints.user import user_bp
-from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf
+from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf, fa
 from mars.models import Role, User, Permission, Department
 from mars.settings import config
-
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -35,7 +34,6 @@ def create_app(config_name=None):
     return app
 
 
-
 def register_logging(app):
     pass
 
@@ -50,6 +48,7 @@ def register_extensions(app):
     whooshee.init_app(app)
     # avatars.init_app(app)
     csrf.init_app(app)
+    fa.init_app(app)
 
 
 def register_blueprints(app):

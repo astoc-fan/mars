@@ -46,10 +46,11 @@
         </div>
 
         {% if departments %}
-            <table class="table table-hover table-striped">
+            <table class="table table-sm table-hover table-striped table-bordered"
+                   data-toggle="table">
                 <thead>
                 <tr>
-                    <th>Department</th>
+                    <th data-sortable="true">Department</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
