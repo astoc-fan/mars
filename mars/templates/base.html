@@ -11,10 +11,6 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.css') }}">
-        <script type="text/javascript"
-                src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.js') }}"></script>
-        <script type="text/javascript"
-                src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table-locale-all.js') }}"></script>
         {{ fontawesome_html() }}
     {% endblock head %}
 </head>
@@ -32,7 +28,7 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <div class="navbar-nav mr-auto">
                     {{ render_nav_item('main.index', 'Home') }}
-                    {#                    {{ render_nav_item('main.about', 'About') }}#}
+                    {# {{ render_nav_item('main.about', 'About') }}#}
                 </div>
                 <div class="navbar-nav ml-auto">
                     {% if current_user.is_authenticated %}
@@ -98,10 +94,12 @@
 </main>
 <div id="toast"></div>
 {% block scripts %}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js.back') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-{#    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>#}
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table-locale-all.js') }}"></script>
+    {#    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>#}
     {{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
 {% endblock %}
 </body>
