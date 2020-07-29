@@ -64,7 +64,7 @@
                     <td>{{ moment(user.member_since).format('LL') }}</td>
                     <td>
                         {% if user.role.name not in ['Administrator', 'Moderator'] %}
-                            <div class="row">
+
                             {% if user.locked %}
                                 <form class="inline" action="{{ url_for('admin.unlock_user', user_id=user.id) }}"
                                       method="post">
@@ -104,7 +104,7 @@
                                     class="fas fa-edit"></span>
                             </a>
                         {% endif %}
-                        </div>
+                        
                     </td>
                 </tr>
             {% endfor %}

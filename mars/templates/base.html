@@ -10,7 +10,7 @@
         <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.min.css') }}">
         {{ fontawesome_html() }}
     {% endblock head %}
 </head>
@@ -68,7 +68,6 @@
             </div>
         </div>
     </nav>
-    <br>
 {% endblock nav %}
 
 <main class="container">
@@ -80,13 +79,10 @@
     {% endfor %}
     {% block content %}{% endblock content %}
     {% block footer %}
-        <hr class="my-4">
         <footer>
             <p class="float-left">
                 <small> &copy; 2020 <a href="mailto:stef.fan@expeditrors.com" title="Written by Stef Fan">Contact Stef
-                    Fan</a> -
-                    <a href="https://insite.expeditors.com" title="insite">Insite</a> -
-                    <a href="http://helloflask.com" title="A HelloFlask project">HelloFlask</a>
+                    Fan</a>
                 </small>
             </p>
         </footer>
@@ -97,8 +93,8 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-table/dist/locale/bootstrap-table-en-US.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-table/dist/locale/bootstrap-table-en-US.min.js') }}"></script>
     {#    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>#}
     {{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
 {% endblock %}

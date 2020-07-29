@@ -1,0 +1,17 @@
+/* global */
+
+.hide {
+    display: none;
+}
+
+.inline {
+    display: inline;
+}
+
+nav {
+    margin-bottom: 20px;
+}
+
+footer {
+    border-top: 1px solid #e5e5e5;
+}

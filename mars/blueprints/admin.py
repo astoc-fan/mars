@@ -1,5 +1,5 @@
 from flask import render_template, flash, Blueprint, request, current_app, redirect, url_for
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from mars.decorators import admin_required, permission_required
 from mars.extensions import db
@@ -129,26 +129,36 @@ def manage_user():
     return render_template('admin/manage_user.html', pagination=pagination, users=users)
 
 
-@admin_bp.route('/manage/department')
+@admin_bp.route('/manage/department', methods=['GET', 'POST'])
 @login_required
 @permission_required('MODERATE')
 def manage_departments():
     department_count = Department.query.count()
     departments = Department.query.all()
-    return render_template('admin/manage_department.html', departments=departments, department_count=department_count)
-
-
-@admin_bp.route('/manage/new_department', methods=['GET', 'POST'])
-@login_required
-@permission_required('MODERATE')
-def new_department():
     form = NewDepartmentForm()
     if form.validate_on_submit():
         department = form.department.data
         new_dept = Department(name=department)
         db.session.add(new_dept)
         db.session.commit()
-    return render_template('admin/new_department.html', form=form)
+        flash('New Department created.', 'success')
+        return redirect(url_for('admin.manage_departments'))
+    return render_template('admin/manage_department.html', departments=departments, department_count=department_count,
+                           form=form)
+
+
+# @admin_bp.route('/manage/new_department', methods=['GET', 'POST'])
+# @login_required
+# @permission_required('MODERATE')
+# def new_department():
+#     form = NewDepartmentForm()
+#     if form.validate_on_submit():
+#         department = form.department.data
+#         new_dept = Department(name=department)
+#         db.session.add(new_dept)
+#         db.session.commit()
+#         flash('New Department created.', 'success')
+#     return render_template('admin/new_department.html', form=form)
 
 
 @admin_bp.route('/department/<int:department_id>', methods=['GET', 'POST'])
@@ -166,4 +176,12 @@ def edit_department(department_id):
     return render_template('admin/edit_department.html', form=form, department=department)
 
 
-
+@admin_bp.route('/department/delete/<int:department_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_department(department_id):
+    department = Department.query.get_or_404(department_id)
+    db.session.delete(department)
+    db.session.commit()
+    flash('Department deleted.', 'success')
+    return redirect(url_for('admin.manage_departments'))
