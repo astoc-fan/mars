@@ -44,11 +44,14 @@
 
     </div>
     {% if users %}
-        <table class="table table-hover table-striped">
+        <table class="table table-striped"
+               data-toggle="table"
+               data-search="true"
+               data-show-Columns="true">
             <thead>
             <tr>
-                <th>Name/username</th>
-                <th>Role</th>
+                <th data-sortable="true" data-field="name">Name/username</th>
+                <th data-sortable="true">Role</th>
                 <th>Branch</th>
                 <th>Department</th>
                 <th>Date</th>
@@ -104,7 +107,7 @@
                                     class="fas fa-edit"></span>
                             </a>
                         {% endif %}
-                        
+
                     </td>
                 </tr>
             {% endfor %}

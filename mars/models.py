@@ -139,3 +139,18 @@ class Department(db.Model):
     def __repr__(self):
         return self.name
 
+
+class Customer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    gci = db.Column(db.String(10), unique=True)
+    name = db.Column(db.String(128), unique=True)
+    op = db.Column(db.String(20))
+    op_email = db.Column(db.Text)
+    customer_email = db.Column(db.Text)
+    create = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class Pre_alert(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    event = db.Column(db.String(4))
+    create = db.Column(db.DateTime, default=datetime.utcnow())
