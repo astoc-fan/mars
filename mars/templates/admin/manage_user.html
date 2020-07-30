@@ -44,10 +44,10 @@
 
     </div>
     {% if users %}
-        <table class="table table-striped"
-               data-toggle="table"
-               data-search="true"
-               data-show-Columns="true">
+        <table class="table table-striped">
+{#               data-toggle="table"#}
+{#               data-search="true"#}
+{#               data-show-Columns="true">#}
             <thead>
             <tr>
                 <th data-sortable="true" data-field="name">Name/username</th>
@@ -73,14 +73,14 @@
                                       method="post">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <input type="submit" onclick="return confirm('Are you sure?');"
-                                           class="btn btn-outline-success btn-sm" value="Unlock">
+                                           class="btn btn-outline-success btn-xs" value="Unlock">
                                 </form>
                             {% else %}
                                 <form class="inline" action="{{ url_for('admin.lock_user', user_id=user.id) }}"
                                       method="post">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <input type="submit" onclick="return confirm('Are you sure?');"
-                                           class="btn btn-outline-primary btn-sm" value="Lock">
+                                           class="btn btn-outline-primary btn-xs" value="Lock">
                                 </form>
                             {% endif %}
                             {% if user.active %}
@@ -88,21 +88,21 @@
                                       method="post">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <input type="submit" onclick="return confirm('Are you sure?');"
-                                           class="btn btn-outline-primary btn-sm" value="Block">
+                                           class="btn btn-outline-primary btn-xs" value="Block">
                                 </form>
                             {% else %}
                                 <form class="inline" action="{{ url_for('admin.unblock_user', user_id=user.id) }}"
                                       method="post">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <input type="submit" onclick="return confirm('Are you sure?');"
-                                           class="btn btn-outline-success btn-sm" value="Unblock">
+                                           class="btn btn-outline-success btn-xs" value="Unblock">
                                 </form>
                             {% endif %}
                         {% endif %}
-                        <a class="btn btn-light btn-sm" href="mailto:{{ user.email }}"><span
+                        <a class="btn btn-light btn-xs" href="mailto:{{ user.email }}"><span
                                 class="fas fa-envelope"></span></a>
                         {% if current_user.is_admin %}
-                            <a class="btn btn-outline-primary btn-sm"
+                            <a class="btn btn-outline-primary btn-xs"
                                href="{{ url_for('admin.edit_profile_admin', user_id=user.id) }}"><span
                                     class="fas fa-edit"></span>
                             </a>

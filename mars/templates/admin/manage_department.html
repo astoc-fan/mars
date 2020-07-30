@@ -65,13 +65,13 @@
                     <td>
 
                             {% if current_user.is_admin %}
-                                <a class="btn btn-outline-primary btn-sm"
+                                <a class="btn btn-outline-primary btn-xs"
                                    href="{{ url_for('admin.edit_department', department_id=department.id) }}">Edit
                                 </a>
                                 <form method="post" class="inline" style="display: inline;"
                                       action="{{ url_for('admin.delete_department', department_id=department.id) }}">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                    <input type="submit" class="btn btn-outline-primary btn-sm" value="Delete"
+                                    <input type="submit" class="btn btn-outline-primary btn-xs" value="Delete"
                                            onclick="return confirm('Are you sure?')">
                                 </form>
                             {% endif %}
