@@ -75,12 +75,17 @@
             </div>
         </div>
     {% else %}
-        <div class="jumbotron">
-            <h1 class="display-3">Hello Mars.</h1>
-            <h4 class="lead">&nbsp;Welcome landing, Please join us now!</h4>
-            <hr class="my-4">
-            <a class="btn btn-outline-primary btn-lg" href="{{ url_for('auth.login') }}">Login</a>&nbsp;&nbsp;
-            <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Register</a>
+        <div class="jumbotron" style="background: url({{ url_for('static', filename='images/bg_sky.jpg') }}) no-repeat center center; background-size: cover">
+{#        <div class="jumbotron">#}
+
+                <h1 class="display-3">
+                    <br>
+                    Hello Mars.</h1>
+                <h3 class="lead">Welcome, join us now!</h3>
+                <hr class="my-4">
+                <a class="btn btn-outline-primary btn-lg" href="{{ url_for('auth.login') }}">Login</a>&nbsp;&nbsp;
+                <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}">Register</a>
+
         </div>
 
     {% endif %}
