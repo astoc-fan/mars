@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/nav.html' import render_breadcrumb_item %}
+
+{% block title %}Pre-Alert{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('pre_alert.index', 'Pre_alert Home') }}
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card bg-secondary mb-4">
+                <div class="card-header"><span class="fas fa-users"></span> Users</div>
+                <div class="card-body">
+                    <h4 class="card-title">Total: {{ user_count|default('0') }}</h4>
+                    <p class="card-text">Locked: {{ locked_user_count|default('0') }}
+                        Blocked: {{ blocked_user_count|default('0') }}</p>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('.manage_user') }}">Manage</a>
+                    <a class="btn btn-secondary btn-sm" href="{{ url_for('.manage_user', filter='locked') }}">View
+                        Locked</a>
+                    <a class="btn btn-secondary btn-sm" href="{{ url_for('.manage_user', filter='blocked') }}">View
+                        Blocked</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card bg-secondary mb-4">
+                <div class="card-header"><span class="fas fa-building"></span> Departments</div>
+                <div class="card-body">
+                    <h4 class="card-title">Total: {{ department_count|default('0') }}</h4>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('.manage_departments') }}">Manage</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

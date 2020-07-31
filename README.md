@@ -18,6 +18,6 @@
 `'Administrator': ['INVOICE_PROCESS', 'PRE_ALERT', 'CUSTOMER_MAINTAIN', 'DASHBOARD', 'ADMINISTER']`
 
 ## Migrate DB
-python migrate.py db init
-python migrate.py db migrate
-python migrate.py db upgrade
+* python manage.py db init
+* python manage.py db migrate
+* python manage.py db upgrade

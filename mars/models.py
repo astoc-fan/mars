@@ -62,9 +62,8 @@ class User(db.Model, UserMixin):
     confirmed = db.Column(db.Boolean, default=False)
     locked = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=True)
-
+    customers = db.relationship('Customer', back_populates='user')
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
-
     role = db.relationship('Role', back_populates='users')
 
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
@@ -142,12 +141,16 @@ class Department(db.Model):
 
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    gci = db.Column(db.String(10), unique=True)
-    name = db.Column(db.String(128), unique=True)
-    op = db.Column(db.String(20))
-    op_email = db.Column(db.Text)
+    gci = db.Column(db.String(10))
+    name = db.Column(db.String(128))
+    # department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
+    # department = db.relationship('Department', back_populates='users')
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    user = db.relationship('User', back_populates='customers')
+    user_email = db.Column(db.Text)
     customer_email = db.Column(db.Text)
     create = db.Column(db.DateTime, default=datetime.utcnow)
+    remark = db.Column(db.String(128))
 
 
 class Pre_alert(db.Model):
