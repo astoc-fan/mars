@@ -5,6 +5,7 @@ from flask import Flask, render_template
 from flask_wtf.csrf import CSRFError
 from mars.blueprints.admin import admin_bp
 # from mars.blueprints.ajax import ajax_bp
+from mars.blueprints.pre_alert import pre_alert_bp
 from mars.blueprints.auth import auth_bp
 from mars.blueprints.main import main_bp
 from mars.blueprints.user import user_bp
@@ -56,6 +57,7 @@ def register_blueprints(app):
     app.register_blueprint(admin_bp, url_prefix='/admin')
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp, url_prefix='/user')
+    app.register_blueprint(pre_alert_bp, url_prefix='/pre_alert')
 
 
 def register_shell_context(app):

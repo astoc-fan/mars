@@ -29,10 +29,10 @@ class Role(db.Model):
     @staticmethod
     def init_role():
         roles_permissions_map = {
-            'Locked': ['FOLLOW', 'COLLECT'],
-            'User': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD'],
-            'Moderator': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD', 'MODERATE'],
-            'Administrator': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD', 'MODERATE', 'ADMINISTER']
+            'Locked': [],
+            'User': ['PRE-ALERT'],
+            'Superuser': ['PRE-ALERT', 'MODERATE'],
+            'Administrator': ['PRE-ALERT', 'MODERATE', 'ADMINISTER']
         }
 
         for role_name in roles_permissions_map:
@@ -65,7 +65,6 @@ class User(db.Model, UserMixin):
     customers = db.relationship('Customer', back_populates='user')
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     role = db.relationship('Role', back_populates='users')
-
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
     department = db.relationship('Department', back_populates='users')
 
@@ -143,10 +142,9 @@ class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     gci = db.Column(db.String(10))
     name = db.Column(db.String(128))
-    # department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
-    # department = db.relationship('Department', back_populates='users')
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     user = db.relationship('User', back_populates='customers')
+    department = db.Column(db.String(20))
     user_email = db.Column(db.Text)
     customer_email = db.Column(db.Text)
     create = db.Column(db.DateTime, default=datetime.utcnow)

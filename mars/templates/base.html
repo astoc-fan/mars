@@ -17,7 +17,7 @@
 <body>
 {% block nav %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-xl">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">
                 Mars System
             </a>
@@ -70,7 +70,7 @@
     </nav>
 {% endblock nav %}
 
-<main class="container">
+<main class="container-xl">
     {% for message in get_flashed_messages(with_categories=True) %}
         <div class="alert alert-{{ message[0] }}" role="alert">
             <button type="button" class="close" data-dismiss="alert">&times;</button>

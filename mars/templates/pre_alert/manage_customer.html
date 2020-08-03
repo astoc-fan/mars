@@ -1,0 +1,100 @@
+{% extends 'pre_alert/index.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}Manage Customer{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('pre_alert.index', 'Pre_alert') }}
+            {{ render_breadcrumb_item('pre_alert.manage_customer', 'Manage Customer') }}
+        </ol>
+    </nav>
+
+    <div class="page-header">
+        <h2>Customer
+            <small class="text-muted">{{ customer_count }}</small>
+        </h2>
+        <p>{{ department }}</p>
+    </div>
+
+    <!-- Button trigger modal -->
+    <p>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newCustomer">
+            New Customer
+        </button>
+    </p>
+    <!-- Modal -->
+    <div class="modal fade" id="newCustomer" tabindex="-1" role="dialog" aria-labelledby="newCustomer"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Customer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render_form(form) }}
+                </div>
+                {#                <div class="modal-footer">#}
+                {#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+                {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
+                {#                </div>#}
+            </div>
+        </div>
+    </div>
+
+    {% if customers %}
+        <table class="table-sm table-striped"
+               data-toggle="table"
+               data-search="true"
+               data-show-Columns="true"
+               data-pagination="true">
+            <thead>
+            <tr>
+                <th data-sortable="true" data-field="gci">Gci</th>
+                <th data-sortable="true" data-field="name">Name</th>
+                <th data-sortable="true" data-field="user">User</th>
+                <th data-sortable="true" data-field="department">Department</th>
+                <th data-sortable="true" data-field="customer_email">Customer Emails</th>
+                <th data-sortable="true" data-field="user_email">User Emails</th>
+                <th data-sortable="true" data-field="remark">Remark</th>
+                {% if current_user.is_admin %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.gci }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.user }}</td>
+                    <td>{{ customer.department }}</td>
+                    <td>{{ customer.customer_email }}</td>
+                    <td>{{ customer.user_email }}</td>
+                    <td>{{ customer.remark }}</td>
+                    {% if current_user.is_admin %}
+                        <td>
+                            <a class="btn btn-outline-primary btn-xs"
+                               href="#">Edit
+                            </a>
+                            <form method="post" class="inline" style="display: inline;"
+                                  action="#">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="submit" class="btn btn-outline-primary btn-xs" value="Delete"
+                                       onclick="return confirm('Are you sure?')">
+                            </form>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="tip"><h5>No customer.</h5></div>
+    {% endif %}
+{% endblock %}
