@@ -35,5 +35,6 @@ def manage_customer():
         db.session.commit()
         flash('New customer created.', 'success')
         return redirect(url_for('pre_alert.manage_customer'))
+    form.department.data = current_user.department_id
     return render_template('pre_alert/manage_customer.html', customers=customers, customer_count=customer_count,
                            form=form)
