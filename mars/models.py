@@ -133,6 +133,7 @@ class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=True)
     users = db.relationship('User', back_populates='department')
+    customers = db.relationship('Customer', back_populates='department')
 
     def __repr__(self):
         return self.name
@@ -144,7 +145,8 @@ class Customer(db.Model):
     name = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     user = db.relationship('User', back_populates='customers')
-    department = db.Column(db.String(20))
+    department_id = db.Column(db.Integer, db.ForeignKey(Department.id))
+    department = db.relationship('Department', back_populates='customers')
     user_email = db.Column(db.Text)
     customer_email = db.Column(db.Text)
     create = db.Column(db.DateTime, default=datetime.utcnow)

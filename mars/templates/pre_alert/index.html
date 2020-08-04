@@ -12,35 +12,31 @@
     <div class="row">
         <div class="col-lg-2">
             <div class="card bg-secondary">
-                <div class="card-header">Customer list</div>
+                <div class="card-header">Customers Maintain</div>
                 <div class="card-body">
-                    <h4 class="card-title">SETUP</h4>
-                    <p class="card-text">Customer: #</p>
-                    <a class="btn btn-primary btn-sm" href="{{ url_for('pre_alert.manage_customer') }}">Manage</a>
-                    <a class="btn btn-secondary btn-sm" href="#">New Customer</a>
-
+                    <h4 class="card-title">Customers: {{ customer_count|default('0') }}</h4>
+                    <p class="card-text"></p>
+                    <a class="btn btn-primary" href="{{ url_for('pre_alert.manage_customer') }}">Manage</a>
                 </div>
             </div>
         </div>
         <div class="col-lg-2">
             <div class="card bg-secondary">
-                <div class="card-header">Template</div>
+                <div class="card-header">Template Maintain</div>
                 <div class="card-body">
-                    <h4 class="card-title">SETUP</h4>
-                    <p class="card-text">template: #</p>
-                    <a class="btn btn-primary btn-sm" href="#">Manage</a>
-                    <a class="btn btn-secondary btn-sm" href="#">New template</a>
+                    <h4 class="card-title">Templates: {{ Template_count|default('0') }}</h4>
+                    <p class="card-text"></p>
+                    <a class="btn btn-primary" href="#">Manage</a>
                 </div>
             </div>
         </div>
         <div class="col-lg-2">
             <div class="card bg-secondary">
-                <div class="card-header">Pre-alert</div>
+                <div class="card-header">Pre-alerts Maintain</div>
                 <div class="card-body">
-                    <h4 class="card-title">SETUP</h4>
-                    <p class="card-text">count: #</p>
-                    <a class="btn btn-primary btn-sm" href="#">Manage</a>
-                    <a class="btn btn-secondary btn-sm" href="#">New alert</a>
+                    <h4 class="card-title">Pre-alerts: {{ Pre_alert_count|default('0') }}</h4>
+                    <p class="card-text"></p>
+                    <a class="btn btn-primary" href="#">Manage</a>
                 </div>
             </div>
         </div>

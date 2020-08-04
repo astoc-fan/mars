@@ -1,0 +1,23 @@
+{% extends 'admin/index.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+{% from 'bootstrap/nav.html' import render_breadcrumb_item %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('pre_alert.index', 'Pre_alert') }}
+            {{ render_breadcrumb_item('pre_alert.manage_customer', 'Manage Customer') }}
+            {{ render_breadcrumb_item('pre_alert.edit_customer', 'Edit Customer') }}
+        </ol>
+    </nav>
+    <div class="page-header">
+        <h2>Edit Customer: {{ customer.gci }} / {{ customer.name }}</h2>
+    </div>
+    <div class="card w-100 bg-light">
+        <div class="card-body">
+            {{ render_form(form) }}
+        </div>
+    </div>
+{% endblock %}
