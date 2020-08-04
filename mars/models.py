@@ -157,3 +157,17 @@ class Pre_alert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event = db.Column(db.String(4))
     create = db.Column(db.DateTime, default=datetime.utcnow())
+
+
+class rates(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    currency = db.Column(db.String(10))
+    currency_abbr = db.Column(db.String(10))
+    price_exch_buy = db.Column(db.Float)
+    price_cash_buy = db.Column(db.Float)
+    price_exch_sell = db.Column(db.Float)
+    price_cash_sell = db.Column(db.Float)
+    price_boc_mid = db.Column(db.Float)
+    publish = db.Column(db.DateTime)
+    create = db.Column(db.DateTime, default=datetime.utcnow)
+

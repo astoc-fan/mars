@@ -5,7 +5,7 @@ from flask_migrate import Migrate, MigrateCommand
 app = mars.create_app()
 manager = Manager(app)
 
-Migrate(app, mars.db)
+Migrate(app, mars.db, render_as_batch=True)
 
 manager.add_command('db', MigrateCommand) # 当你的命令中出现 db 指令,则去MigrateCommand中寻找对应关系
 """
