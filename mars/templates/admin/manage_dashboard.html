@@ -1,0 +1,96 @@
+{% extends 'admin/index.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}Manage Dashboard{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('admin.index', 'Admin Home') }}
+            {{ render_breadcrumb_item('admin.manage_dashboards', 'Manage Dashboard') }}
+        </ol>
+    </nav>
+
+    <div class="page-header">
+        <h2>Dashboards
+            <small class="text-muted">{{ dashboard_count }}</small>
+        </h2>
+    </div>
+
+    <!-- Button trigger modal -->
+    <p>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newDashboard">
+            New Dashboard
+        </button>
+    </p>
+    <!-- Modal -->
+    <div class="modal fade" id="newDashboard" tabindex="-1" role="dialog" aria-labelledby="newDashboard"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Department</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ render_form(form) }}
+                </div>
+                {#                <div class="modal-footer">#}
+                {#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+                {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
+                {#                </div>#}
+            </div>
+        </div>
+    </div>
+
+    {% if dashboards %}
+        <table class="table-sm table-striped"
+               data-toggle="table"
+               data-search="true"
+               data-show-Columns="true"
+               data-pagination="true">
+            <thead>
+            <tr>
+                <th data-sortable="true" data-field="name">Dashboard</th>
+                <th data-sortable="true" data-field="name">Description</th>
+                <th data-sortable="true" data-field="name">Category</th>
+                <th data-sortable="true" data-field="name">Url</th>
+                <th data-sortable="true" data-field="name">Author</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for dasboard in dashboards %}
+                <tr>
+                    <td>{{ dasboard.name }}</td>
+                    <td>{{ dasboard.desc }}</td>
+                    <td>{{ dasboard.category }}</td>
+                    <td>{{ dasboard.url }}</td>
+                    <td>{{ dasboard.author }}</td>
+
+                    <td>
+
+                        {% if current_user.is_admin %}
+                            <a class="btn btn-outline-primary btn-xs"
+                               href="#">Edit
+                            </a>
+                            <form method="post" class="inline" style="display: inline;"
+                                  action="#">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="submit" class="btn btn-outline-primary btn-xs" value="Delete"
+                                       onclick="return confirm('Are you sure?')">
+                            </form>
+                        {% endif %}
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="tip"><h5>No dasboard.</h5></div>
+    {% endif %}
+{% endblock %}

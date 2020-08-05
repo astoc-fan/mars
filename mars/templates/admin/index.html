@@ -34,5 +34,14 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-4">
+            <div class="card bg-secondary mb-4">
+                <div class="card-header"><span class="fas fa-building"></span> Dashboards</div>
+                <div class="card-body">
+                    <h4 class="card-title">Total: {{ dashboard_count|default('0') }}</h4>
+                    <a class="btn btn-primary btn-sm" href="{{ url_for('.manage_dashboards') }}">Manage</a>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

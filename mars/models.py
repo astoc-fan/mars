@@ -171,3 +171,14 @@ class Rates(db.Model):
     publish = db.Column(db.DateTime)
     create = db.Column(db.DateTime, default=datetime.utcnow)
 
+
+class Dashboard(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20), unique=True)
+    desc = db.Column(db.String(256))
+    category = db.Column(db.String(20))
+    url = db.Column(db.String(2000))
+    author = db.Column(db.String(20))
+    show = db.Column(db.Boolean, default=False)
+    create = db.Column(db.DateTime, default=datetime.utcnow)
+

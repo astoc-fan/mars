@@ -3,8 +3,8 @@ from flask_login import login_required
 
 from mars.decorators import admin_required, permission_required
 from mars.extensions import db
-from mars.forms.admin import EditProfileAdminForm, NewDepartmentForm, EditDepartmentForm
-from mars.models import Role, User, Department
+from mars.forms.admin import EditProfileAdminForm, NewDepartmentForm, EditDepartmentForm, DashboardForm
+from mars.models import Role, User, Department, Dashboard
 from mars.utils import redirect_back
 
 admin_bp = Blueprint('admin', __name__)
@@ -185,3 +185,26 @@ def delete_department(department_id):
     db.session.commit()
     flash('Department deleted.', 'success')
     return redirect(url_for('admin.manage_departments'))
+
+
+@admin_bp.route('/manage/dashboard', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def manage_dashboards():
+    dashboard_count = Dashboard.query.count()
+    dashboards = Dashboard.query.all()
+    form = DashboardForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        desc = form.desc.data
+        category = form.category.data
+        url = form.url.data
+        author = form.author.data
+        new_dashboard = Dashboard(name=name, desc=desc, category=category, url=url, author=author)
+        db.session.add(new_dashboard)
+        db.session.commit()
+        flash('New Dashboard created.', 'success')
+        return redirect(url_for('admin.manage_dashboards'))
+    return render_template('admin/manage_dashboard.html', dashboards=dashboards, dashboard_count=dashboard_count,
+                           form=form)
+

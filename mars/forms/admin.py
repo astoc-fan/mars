@@ -3,7 +3,7 @@ from wtforms import ValidationError
 from wtforms.validators import DataRequired, Length, Email
 from flask_wtf import FlaskForm
 from mars.forms.user import EditProfileForm
-from mars.models import User, Role, Department
+from mars.models import User, Role, Department, Dashboard
 
 
 class EditProfileAdminForm(EditProfileForm):
@@ -47,3 +47,16 @@ class EditDepartmentForm(FlaskForm):
     def validate_department(self, field):
         if field.data != self.department.name and Department.query.filter_by(name=field.data).first():
             raise ValidationError('The department is already exist.')
+
+
+class DashboardForm(FlaskForm):
+    name = StringField('Dashboard Name', validators=[DataRequired(), Length(1, 20)])
+    desc = StringField('Description', validators=[DataRequired(), Length(1, 256)])
+    category = StringField('Category', validators=[DataRequired(), Length(1, 20)])
+    url = StringField('Url link', validators=[DataRequired(), Length(1, 2000)])
+    author = StringField('Category', validators=[DataRequired(), Length(1, 20)])
+    submit = SubmitField()
+
+    def validate_dashboard(self, field):
+        if field.data != self.dashboard.name and Dashboard.query.filter_by(name=field.data).first():
+            raise ValidationError('The dashboard is already exist.')
