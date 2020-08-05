@@ -11,3 +11,6 @@ def import_rates_to_db():
     df.to_sql('rates', conn, if_exists='append', index=False)
     print('ok')
 
+
+if __name__ == '__main__':
+    import_rates_to_db()

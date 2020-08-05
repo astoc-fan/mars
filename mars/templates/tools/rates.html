@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/nav.html' import render_breadcrumb_item %}
+{% block title %}Rates {% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('tools.index', 'Tools') }}
+            {{ render_breadcrumb_item('tools.rates', 'Rates') }}
+        </ol>
+    </nav>
+
+    <div class="page-header">
+        <p>
+        <h2>Rates Today
+            <small class="text-muted"><span class="fas fa-calendar-alt"></span> {{ moment().format('YYYY-MM-DD') }}
+            </small>
+        </h2>
+        </p>
+    </div>
+
+    <div class="container">
+        {% if rates_today %}
+            <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>货币名称</th>
+                <th>Currency</th>
+                <th>现汇买入价</th>
+                <th>现钞买入价</th>
+                <th>现汇卖出价</th>
+                <th>现钞卖出价</th>
+                <th>中行折算价</th>
+                <th>发布时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for rate in rates_today %}
+                <tr>
+                    <td>{{ rate.currency }}</td>
+                    <td>{{ rate.currency_abbr }}</td>
+                    <td>{{ rate.price_exch_buy }}</td>
+                    <td>{{ rate.price_cash_buy }}</td>
+                    <td>{{ rate.price_exch_sell }}</td>
+                    <td>{{ rate.price_cash_sell }}</td>
+                    <td>{{ rate.price_boc_mid }}</td>
+                    <td>{{ rate.publish }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <div class="tip"><h5>No updates.</h5></div>
+        {% endif %}
+        </tbody>
+        </table>
+    </div>
+{% endblock %}

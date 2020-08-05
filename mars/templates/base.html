@@ -28,7 +28,7 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <div class="navbar-nav mr-auto">
                     {{ render_nav_item('main.index', 'Home') }}
-                    {# {{ render_nav_item('main.about', 'About') }}#}
+                    {{ render_nav_item('tools.index', 'Tools') }}
                 </div>
                 <div class="navbar-nav ml-auto">
                     {% if current_user.is_authenticated %}

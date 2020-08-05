@@ -24,8 +24,3 @@ def dashboard():
 @main_bp.route('/table')
 def table():
     return render_template('main/test2.html')
-
-
-@main_bp.route('/rates')
-def rates():
-    return render_template('main/rates.html')
