@@ -29,7 +29,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New Department</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">New Dashboard</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -54,24 +54,24 @@
             <thead>
             <tr>
                 <th data-sortable="true" data-field="name">Dashboard</th>
-                <th data-sortable="true" data-field="name">Description</th>
-                <th data-sortable="true" data-field="name">Category</th>
-                <th data-sortable="true" data-field="name">Url</th>
-                <th data-sortable="true" data-field="name">Author</th>
+                <th data-sortable="true" data-field="desc">Description</th>
+                <th data-sortable="true" data-field="category">Category</th>
+                <th data-sortable="true" data-field="url">Url</th>
+                <th data-sortable="true" data-field="author">Author</th>
+                <th data-sortable="true" data-field="show">Show?</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            {% for dasboard in dashboards %}
+            {% for dashboard in dashboards %}
                 <tr>
-                    <td>{{ dasboard.name }}</td>
-                    <td>{{ dasboard.desc }}</td>
-                    <td>{{ dasboard.category }}</td>
-                    <td>{{ dasboard.url }}</td>
-                    <td>{{ dasboard.author }}</td>
-
+                    <td>{{ dashboard.name }}</td>
+                    <td>{{ dashboard.desc }}</td>
+                    <td>{{ dashboard.category }}</td>
+                    <td>{{ dashboard.url }}</td>
+                    <td>{{ dashboard.author }}</td>
+                    <td>{{ dashboard.show }}</td>
                     <td>
-
                         {% if current_user.is_admin %}
                             <a class="btn btn-outline-primary btn-xs"
                                href="#">Edit
@@ -83,7 +83,6 @@
                                        onclick="return confirm('Are you sure?')">
                             </form>
                         {% endif %}
-
                     </td>
                 </tr>
             {% endfor %}
@@ -91,6 +90,6 @@
         </table>
 
     {% else %}
-        <div class="tip"><h5>No dasboard.</h5></div>
+        <div class="tip"><h5>No dashboard.</h5></div>
     {% endif %}
 {% endblock %}

@@ -15,18 +15,20 @@
         }
     </style>
 </head>
-<body>
+<body onLoad= "javascript:window.resizeTo(screen.availWidth,screen.availHeight);window.moveTo(0,0) ">
 <!--<iframe height="100%" width="100%" src="https://login.chq.ei/" id="frame_full" frameborder="no" scrolling="auto"></iframe>
 -->
 <iframe id="show" frameborder="0" scrolling="auto"
         onload="this.style.height=document.body.clientHeight-50"></iframe>
 <script>
-    let i = 0, s = ["http://localhost:8080/", "https://login.chq.ei/"], delay_sec = 1000;
+    let i = 0,
+        s = [{% for dashboard in dashboards %}"{{ dashboard.url }}",{% endfor %}],
+        delay_sec = 1000;
         const w = document.getElementById("show");
         setInterval(function () {
             w.src = s[i];
             i = ++i % s.length;
-        }, delay_sec * 3);
+        }, delay_sec * 15);
 </script>
 </body>
 </html>

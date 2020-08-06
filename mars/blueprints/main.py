@@ -4,7 +4,7 @@ from flask_login import current_user
 # from mars.emails import send_new_comment_email, send_new_reply_email
 from mars.extensions import db
 # from mars.forms import CommentForm, AdminCommentForm
-# from mars.models import Post, Category, Comment
+from mars.models import Dashboard
 from mars.utils import redirect_back
 
 main_bp = Blueprint('main', __name__)
@@ -18,7 +18,8 @@ def index():
 
 @main_bp.route('/dashboard')
 def dashboard():
-    return render_template('dashboard/dashboard.html')
+    dashboards = Dashboard.query.filter_by(author='stef')
+    return render_template('dashboard/dashboard.html', dashboards=dashboards)
 
 
 @main_bp.route('/table')
