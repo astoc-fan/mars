@@ -1,5 +1,6 @@
 import os
 import sys
+from mars.script.rates import aps_test
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -35,6 +36,16 @@ class BaseConfig:
     MAIL_DEFAULT_SENDER = ('expd-tsn@expeditors.com', MAIL_USERNAME)
 
     WHOOSHEE_MIN_STRING_LEN = 1
+    SCHEDULER_API_ENABLED = True
+    JOBS = [
+        {
+            'id': 'job1',
+            'func': aps_test,
+            'args': '',
+            'trigger': 'interval',
+            'seconds': 2
+        }
+    ]
 
 
 class DevelopmentConfig(BaseConfig):

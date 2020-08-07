@@ -1,6 +1,6 @@
 import datetime
 
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, current_app
 
 from mars.extensions import db
 from mars.models import Rates

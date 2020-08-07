@@ -8,6 +8,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_whooshee import Whooshee
 from flask_wtf import CSRFProtect
 from flask_fontawesome import FontAwesome
+from flask_apscheduler import APScheduler
+
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -19,6 +21,7 @@ whooshee = Whooshee()
 # avatars = Avatars()
 csrf = CSRFProtect()
 fa = FontAwesome()
+scheduler = APScheduler()
 
 
 @login_manager.user_loader

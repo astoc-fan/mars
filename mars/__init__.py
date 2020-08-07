@@ -10,7 +10,7 @@ from mars.blueprints.auth import auth_bp
 from mars.blueprints.main import main_bp
 from mars.blueprints.user import user_bp
 from mars.blueprints.tools import tools_bp
-from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf, fa
+from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf, fa, scheduler
 from mars.models import Role, User, Permission, Department, Pre_alert, Customer, Rates
 from mars.settings import config
 
@@ -51,6 +51,8 @@ def register_extensions(app):
     # avatars.init_app(app)
     csrf.init_app(app)
     fa.init_app(app)
+    scheduler.init_app(app)
+    scheduler.start()
 
 
 def register_blueprints(app):
@@ -59,7 +61,7 @@ def register_blueprints(app):
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(pre_alert_bp, url_prefix='/pre_alert')
-    app.register_blueprint(tools_bp,url_prefix='/tools')
+    app.register_blueprint(tools_bp, url_prefix='/tools')
 
 
 def register_shell_context(app):

@@ -15,5 +15,6 @@ python manager.py db migrate   # Django中的 makemigration
 python manager.py db upgrade  # Django中的 migrate
 """
 
+
 if __name__ == '__main__':
     manager.run()

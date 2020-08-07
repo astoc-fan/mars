@@ -1,4 +1,6 @@
 import sqlite3
+import mars
+import datetime
 import pandas
 
 
@@ -12,5 +14,10 @@ def import_rates_to_db():
     print('ok')
 
 
+def aps_test():
+    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'testing')
+
+
 if __name__ == '__main__':
     import_rates_to_db()
+    aps_test()
