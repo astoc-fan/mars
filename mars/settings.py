@@ -1,6 +1,6 @@
 import os
 import sys
-from mars.script.rates import aps_test
+from mars.script.tasks import aps_test
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
