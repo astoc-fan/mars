@@ -1,6 +1,6 @@
 import os
 import sys
-from mars.script.tasks import aps_test
+from mars.script.tasks import spider_rates
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -40,10 +40,10 @@ class BaseConfig:
     JOBS = [
         {
             'id': 'job1',
-            'func': aps_test,
+            'func': spider_rates,
             'args': '',
             'trigger': 'interval',
-            'seconds': 2
+            'minutes': 1
         }
     ]
 

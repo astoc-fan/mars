@@ -17,4 +17,5 @@ def index():
 def rates():
     today = datetime.date.today()
     rates_today = Rates.query.filter(Rates.publish > today).all()
-    return render_template('tools/rates.html', rates_today=rates_today)
+    last10 = Rates.query.filter(Rates.publish).order_by(Rates.id.desc()).limit(10)
+    return render_template('tools/rates.html', rates_today=last10)
