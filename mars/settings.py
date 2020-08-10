@@ -42,8 +42,8 @@ class BaseConfig:
             'id': 'job1',
             'func': spider_rates,
             'args': '',
-            'trigger': 'interval',
-            'minutes': 1
+            'trigger': 'cron',
+            'second': '*/10'
         }
     ]
 

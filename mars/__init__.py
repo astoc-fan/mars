@@ -128,4 +128,3 @@ def register_commands(app):
         Role.init_role()
 
         click.echo('Done.')
-
