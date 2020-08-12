@@ -16,10 +16,12 @@ admin_bp = Blueprint('admin', __name__)
 def index():
     user_count = User.query.count()
     department_count = Department.query.count()
+    dashboard_count = Dashboard.query.count()
     locked_user_count = User.query.filter_by(locked=True).count()
     blocked_user_count = User.query.filter_by(active=False).count()
     return render_template('admin/index.html', user_count=user_count, locked_user_count=locked_user_count,
-                           blocked_user_count=blocked_user_count, department_count=department_count)
+                           blocked_user_count=blocked_user_count, department_count=department_count,
+                           dashboard_count=dashboard_count)
 
 
 @admin_bp.route('/profile/<int:user_id>', methods=['GET', 'POST'])
@@ -200,7 +202,8 @@ def manage_dashboards():
         category = form.category.data
         url = form.url.data
         author = form.author.data
-        new_dashboard = Dashboard(name=name, desc=desc, category=category, url=url, author=author)
+        show = form.show.data
+        new_dashboard = Dashboard(name=name, desc=desc, category=category, url=url, author=author, show=show)
         db.session.add(new_dashboard)
         db.session.commit()
         flash('New Dashboard created.', 'success')
@@ -208,3 +211,38 @@ def manage_dashboards():
     return render_template('admin/manage_dashboard.html', dashboards=dashboards, dashboard_count=dashboard_count,
                            form=form)
 
+
+@admin_bp.route('/dashboard/<int:dashboard_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_dashboard(dashboard_id):
+    dashboard = Dashboard.query.get_or_404(dashboard_id)
+    form = DashboardForm(dashboard=dashboard)
+    if form.validate_on_submit():
+        dashboard.name = form.name.data
+        dashboard.desc = form.desc.data
+        dashboard.category = form.category.data
+        dashboard.url = form.url.data
+        dashboard.author = form.author.data
+        dashboard.show = form.show.data
+        db.session.commit()
+        flash('Dashboard updated.', 'success')
+        return redirect_back()
+    form.name.data = dashboard.name
+    form.desc.data = dashboard.desc
+    form.category.data = dashboard.category
+    form.url.data = dashboard.url
+    form.author.data = dashboard.author
+    form.show.data = dashboard.show
+    return render_template('admin/edit_dashboard.html', form=form, dashboard=dashboard)
+
+
+@admin_bp.route('/dashboard/delete/<int:dashboard_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_dashboard(dashboard_id):
+    dashboard = Dashboard.query.get_or_404(dashboard_id)
+    db.session.delete(dashboard)
+    db.session.commit()
+    flash('Dashboard deleted.', 'success')
+    return redirect(url_for('admin.manage_dashboards'))

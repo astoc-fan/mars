@@ -1,9 +1,9 @@
 import datetime
 import sqlite3
 from urllib import request
-
 import pandas as pd
 from bs4 import BeautifulSoup
+from mars.extensions import scheduler
 
 
 def spider_rates():
@@ -34,14 +34,17 @@ def spider_rates():
     new['Currency'] = currency_en
     new = new.reindex(columns=col_name)
     new = new.drop(['发布时间'], axis=1)
-    new.to_csv(r'\\tsn-comm01\sys\ftp\erbranch\rates\rates.csv', index=False, header=True, encoding='utf-8')
+    # new.to_csv(r'\\tsn-comm01\sys\ftp\erbranch\rates\rates.csv', index=False, header=True, encoding='utf-8')
+    # df = pd.read_csv(r'\\tsn-comm01\sys\ftp\erbranch\rates\rates.csv')
+
     conn = sqlite3.connect(r'..\..\data-dev.db')
     new.columns = ['currency', 'currency_abbr', 'price_exch_buy', 'price_cash_buy', 'price_exch_sell',
-                   'price_cash_sell', 'price_boc_mid', 'publish']
-    new.to_sql('rates', conn, if_exists='append', index=False)
+                  'price_cash_sell', 'price_boc_mid', 'publish']
+    # print(df)
+    new.to_sql('rates', con=conn, if_exists='append', index=False)
     conn.commit()
     conn.close()
-    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'rates imported.')
+    # print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'rates imported.')
 
 
 if __name__ == '__main__':

@@ -2,18 +2,18 @@
 {% from 'bootstrap/form.html' import render_form %}
 {% from 'bootstrap/nav.html' import render_breadcrumb_item %}
 
-{% block title %}Edit Department{% endblock %}
+{% block title %}Edit Dashboard{% endblock %}
 
 {% block content %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             {{ render_breadcrumb_item('admin.index', 'Admin Home') }}
-            {{ render_breadcrumb_item('admin.manage_departments', 'Manage Department') }}
-            {{ render_breadcrumb_item('admin.edit_department', 'Edit Department') }}
+            {{ render_breadcrumb_item('admin.manage_dashboards', 'Manage Dashboard') }}
+            {{ render_breadcrumb_item('admin.edit_dashboard', 'Edit Dashboard') }}
         </ol>
     </nav>
     <div class="page-header">
-        <h2>Edit Department
+        <h2>Edit Dashboard
         </h2>
     </div>
     <div class="card w-100 bg-light">

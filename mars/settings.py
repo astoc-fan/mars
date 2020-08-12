@@ -43,7 +43,7 @@ class BaseConfig:
             'func': spider_rates,
             'args': '',
             'trigger': 'cron',
-            'second': '*/10'
+            'second': '*/30'
         }
     ]
 

@@ -55,6 +55,7 @@ class DashboardForm(FlaskForm):
     category = StringField('Category', validators=[DataRequired(), Length(1, 20)])
     url = StringField('Url link', validators=[DataRequired(), Length(1, 2000)])
     author = StringField('Author', validators=[DataRequired(), Length(1, 20)])
+    show = BooleanField('Show?')
     submit = SubmitField()
 
     def validate_dashboard(self, field):

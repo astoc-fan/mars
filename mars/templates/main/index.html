@@ -8,8 +8,8 @@
 
         <p>Welcome back, {{ current_user.name }}!</p>
 
-        <div class="row">
-            <div class="col-lg-3">
+        <div class="card-columns">
+
                 <div class="card bg-secondary mb-4">
                     <h5 class="card-header"><span class="fas fa-bell"></span> Pre-Alert</h5>
                     <div class="list-group list-group-flush">
@@ -24,32 +24,32 @@
                         </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3">
+
+
                 <div class="card bg-secondary mb-4">
                     <h5 class="card-header"><span class="fas fa-chart-line"></span> Dashboard</h5>
                     <div class="list-group list-group-flush">
-                        <a href="{{ url_for('main.dashboard') }}" class="list-group-item list-group-item-action">
-                            Branch Dashboard
+                        <a href="{{ url_for('dashboard.tvdashboard') }}" target="_blank" class="list-group-item list-group-item-action">
+                            TV Dashboard  <span class="fas fa-external-link-alt"></span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            Customers Dashboards
+                        <a href="{{ url_for('dashboard.index') }}" class="list-group-item list-group-item-action">
+                            Branch Dashboards
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            Request one
+                        <a href="#" class="list-group-item list-group-item-action disabled">
+                            ...
                         </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3">
+
+
                 <div class="card bg-secondary mb-4">
                     <h5 class="card-header"><span class="fas fa-toolbox"></span> Tools</h5>
                     <div class="list-group list-group-flush">
                         <a href="{{ url_for('tools.rates') }}" target="_blank" class="list-group-item list-group-item-action">
                             <span class="fas fa-exchange-alt"></span> Rates
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action disabled">
-                            ...
+                        <a href="{{ url_for('main.map') }}" class="list-group-item list-group-item-action">
+                            Tianjin Map
                         </a>
                         <a href="#" class="list-group-item list-group-item-action disabled">
                             ...
@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+
     {% else %}
         <div class="jumbotron" style="background: url({{ url_for('static', filename='images/bg_sky.jpg') }}) no-repeat center center; background-size: cover">
 {#        <div class="jumbotron">#}

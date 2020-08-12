@@ -22,6 +22,9 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newDashboard">
             New Dashboard
         </button>
+        <a type="button" href="{{ url_for('dashboard.index') }}" class="btn btn-secondary">
+            Goto Branch Dashboards
+        </a>
     </p>
     <!-- Modal -->
     <div class="modal fade" id="newDashboard" tabindex="-1" role="dialog" aria-labelledby="newDashboard"
@@ -74,10 +77,10 @@
                     <td>
                         {% if current_user.is_admin %}
                             <a class="btn btn-outline-primary btn-xs"
-                               href="#">Edit
+                               href="{{ url_for('admin.edit_dashboard', dashboard_id=dashboard.id) }}">Edit
                             </a>
                             <form method="post" class="inline" style="display: inline;"
-                                  action="#">
+                                  action="{{ url_for('admin.delete_dashboard', dashboard_id=dashboard.id) }}">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <input type="submit" class="btn btn-outline-primary btn-xs" value="Delete"
                                        onclick="return confirm('Are you sure?')">

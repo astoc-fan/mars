@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/nav.html' import render_breadcrumb_item %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    {#    <nav aria-label="breadcrumb">#}
+    {#        <ol class="breadcrumb">#}
+    {#            {{ render_breadcrumb_item('admin.index', 'Admin Home') }}#}
+    {#        </ol>#}
+    {#    </nav>#}
+    <div class="page-header">
+        <h2>Branch Dashboard
+
+        {% if current_user.is_admin %}
+            <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('admin.manage_dashboards') }}">Manage</a>
+        {% endif %}</h2>
+    </div>
+    <div class="card-columns">
+        {% for dashboard in dashboards %}
+{#            <div class="col-lg-3">#}
+                <div class="card bg-secondary">
+                    <div class="card-header"><span class="fas fa-chart-line"></span> {{ dashboard.category }}</div>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ dashboard.name }}</h4>
+                        <p class="card-text"><span class="fas fa-file-alt"></span>  {{ dashboard.desc }} </br>
+                            <span class="fas fa-user"></span>   {{ dashboard.author }}</p>
+                        <p class="card-text"></p>
+                        <a class="btn btn-outline-primary btn-sm" href="{{ dashboard.url }}" target="_blank">View
+                            Dashboard</a>
+                    </div>
+                </div>
+{#            </div>#}
+        {% endfor %}
+    </div>
+
+{% endblock %}

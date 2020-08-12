@@ -16,12 +16,8 @@ def index():
     return render_template('main/index.html')
 
 
-@main_bp.route('/dashboard')
-def dashboard():
-    dashboards = Dashboard.query.filter_by(author='stef')
-    return render_template('dashboard/dashboard.html', dashboards=dashboards)
+@main_bp.route('/map')
+def map():
+    # return render_template('mars/index.html', pagination=pagination, posts=posts)
+    return render_template('main/map.html')
 
-
-@main_bp.route('/table')
-def table():
-    return render_template('main/test2.html')

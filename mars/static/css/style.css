@@ -40,3 +40,14 @@ footer {
     max-width: 1540px;
   }
 }
+
+@media (min-width: 576px) {
+    .card-columns {
+        -webkit-column-count: 4;
+        column-count: 4;
+        -webkit-column-gap: 1.25rem;
+        column-gap: 1.25rem;
+        orphans: 1;
+        widows: 1;
+    }
+}
