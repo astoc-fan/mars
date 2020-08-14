@@ -2,33 +2,57 @@
 <html lang="en">
 <head>
     <title>TV Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <style type="text/css">
         html, body {
             margin: 0 0;
             width: 100%;
             height: 100%;
         }
+
         iframe {
             margin: 0 0;
             width: 100%;
             height: 100%;
+            background-color: transparent;
         }
     </style>
 </head>
-<body onLoad= "javascript:window.resizeTo(screen.availWidth,screen.availHeight);window.moveTo(0,0) ">
-<!--<iframe height="100%" width="100%" src="https://login.chq.ei/" id="frame_full" frameborder="no" scrolling="auto"></iframe>
--->
-<iframe id="show" frameborder="0" scrolling="auto"
-        onload="this.style.height=document.body.clientHeight-50"></iframe>
+<body onLoad="javascript:window.resizeTo(screen.availWidth,screen.availHeight);window.moveTo(0,0) ">
+
+<div class="progress" style="margin: 0 0;width: 100%;height: 0.3%;">
+    <div id="progressbar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+    </div>
+</div>
+
+<div style="background: url({{ url_for('static', filename='images/bg_sky.jpg') }}) no-repeat center center;
+        background-size: cover;margin: 0 0;width: 100%;height: 99.7%;">
+    <iframe id="show" frameborder="0" allowtransparency="true" style="background-color:transparent"
+            src="{{ dashboards[1].url }}?rs:Command=Render&rc:Toolbar=false&rs:embed=true"></iframe>
+</div>
+
 <script>
-    let i = 0,
-        s = [{% for dashboard in dashboards %}"{{ dashboard.url }}",{% endfor %}],
-        delay_sec = 1000;
-        const w = document.getElementById("show");
-        setInterval(function () {
-            w.src = s[i];
-            i = ++i % s.length;
-        }, delay_sec * 15);
+    let i = 0, j = 0,
+        s = [{% for dashboard in dashboards %}"{{ dashboard.url }}?rs:Command=Render&rc:Toolbar=false&rs:embed=true",{% endfor %}],
+        delay_sec = 1000 * 30;
+    const w = document.getElementById("show");
+    function dashboard() {
+        i = ++i % s.length;
+        w.src = s[i];
+        console.log(i, w.src);
+    }
+    setInterval(dashboard, delay_sec);
+    let progressbar = setInterval(function(){
+        if(j>=100){
+            j=0;
+        }
+        let progressbar = document.getElementById("progressbar");
+        progressbar.style.width = j+"%";
+        j++;
+        console.log(j);
+    },delay_sec/100)
 </script>
 </body>
 </html>

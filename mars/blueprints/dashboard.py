@@ -21,7 +21,7 @@ def index():
 @login_required
 @permission_required('MODERATE')
 def tvdashboard():
-    dashboards = Dashboard.query.filter_by(author='stef')
+    dashboards = Dashboard.query.filter_by(show=True)
     return render_template('dashboard/tvdashboard.html', dashboards=dashboards)
 
 
