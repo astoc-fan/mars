@@ -23,7 +23,7 @@ class BaseConfig:
     MARS_MANAGE_USER_PER_PAGE = 30
     MARS_MAIL_SUBJECT_PREFIX = '[MARS]'
     MARS_ADMIN_EMAIL = os.getenv('MARS_ADMIN', 'stef.fan@expeditors.com')
-
+    STATIC_PATH = os.path.join(basedir, 'mars', 'static')
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev key')
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -43,7 +43,7 @@ class BaseConfig:
             'func': spider_rates,
             'args': '',
             'trigger': 'cron',
-            'second': '*/30'
+            'minute': '*/30'
         }
     ]
 

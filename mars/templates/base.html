@@ -29,6 +29,7 @@
                 <div class="navbar-nav mr-auto">
                     {{ render_nav_item('main.index', 'Home') }}
                     {{ render_nav_item('tools.index', 'Tools') }}
+                    {{ render_nav_item('dashboard.tvdashboard', 'TV Dashboard') }}
                 </div>
                 <div class="navbar-nav ml-auto">
                     {% if current_user.is_authenticated %}

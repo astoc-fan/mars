@@ -36,7 +36,7 @@
 <script>
     let i = 0, j = 0,
         s = [{% for dashboard in dashboards %}"{{ dashboard.url }}?rs:Command=Render&rc:Toolbar=false&rs:embed=true",{% endfor %}],
-        delay_sec = 1000 * 30;
+        delay_sec = 1000 * 60;
     const w = document.getElementById("show");
     function dashboard() {
         i = ++i % s.length;
