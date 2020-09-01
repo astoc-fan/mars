@@ -15,7 +15,7 @@ def index():
 
 @tools_bp.route('/rates')
 def rates():
-    today = datetime.date.today()
-    rates_today = Rates.query.filter(Rates.publish > today).all()
+    # today = datetime.date.today()
+    # rates_today = Rates.query.filter(Rates.publish > today).all()
     last10 = Rates.query.filter(Rates.publish).order_by(Rates.id.desc()).limit(10)
-    return render_template('tools/rates.html', rates_today=last10)
+    return render_template('tools/rates.html', last10=last10)

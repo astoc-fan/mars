@@ -31,6 +31,7 @@ def spider_rates():
     new = pd.DataFrame(table, columns=table[0]).dropna(axis=0, how='all', inplace=False)
     new = new.loc[new['货币名称'].isin(currency)]
     new = new.drop(['发布时间'], axis=1)
+    new['发布日期'] = pd.to_datetime(new['发布日期'])
     new.index = new['货币名称']
     col_name = new.columns.tolist()
     col_name.insert(1, 'Currency')
@@ -42,9 +43,9 @@ def spider_rates():
     # new.to_csv(r'\\tsn-comm01\sys\ftp\erbranch\rates\rates.csv', index=False, header=True, encoding='utf-8')
     new.columns = ['currency', 'currency_abbr', 'price_exch_buy', 'price_cash_buy', 'price_exch_sell',
                   'price_cash_sell', 'price_boc_mid', 'publish']
-
-    # new.to_sql('rates', con=conn, if_exists='append', index=False)
     conn = sqlite3.connect(r'D:\python\mars\data-dev.db')
+    new.to_sql('rates', con=conn, if_exists='append', index=False)
+
     conn.commit()
     conn.close()
     print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'rates imported.')

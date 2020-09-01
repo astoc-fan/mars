@@ -20,7 +20,7 @@
     </div>
 
     <div class="container">
-        {% if rates_today %}
+        {% if last10 %}
             <table class="table table-striped">
             <thead>
             <tr>
@@ -35,7 +35,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for rate in rates_today %}
+            {% for rate in last10 %}
                 <tr>
                     <td>{{ rate.currency }}</td>
                     <td>{{ rate.currency_abbr }}</td>

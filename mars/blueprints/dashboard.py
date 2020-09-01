@@ -13,14 +13,15 @@ from pyecharts.globals import ThemeType
 
 
 dashboard_bp = Blueprint('dashboard', __name__)
-data = pd.read_csv(r"D:\python\test-pyechart\OE.csv")
-ab = []
-od = []
-for index, row in data.iterrows():
-    ab.append([row['DEST CITY'], row['CW']])
-    od.append([row['ORIGIN CITY'], row['DEST CITY']])
-min_data = min([d[1] for d in ab])
-max_data = max([d[1] for d in ab])
+
+# data = pd.read_csv(r"D:\python\test-pyechart\OE.csv")
+# ab = []
+# od = []
+# for index, row in data.iterrows():
+#     ab.append([row['DEST CITY'], row['CW']])
+#     od.append([row['ORIGIN CITY'], row['DEST CITY']])
+# min_data = min([d[1] for d in ab])
+# max_data = max([d[1] for d in ab])
 
 
 @dashboard_bp.route('/')
@@ -74,29 +75,29 @@ def tianjin():
     return render_template('dashboard/tianjin.html', maptianjin=maptianjin.dump_options())
 
 
-@dashboard_bp.route('/test')
-def testdashboard():
-    c = (
-        Geo()
-            .add_schema(maptype="world")
-            .add_coordinate_json(json_file=os.path.join(current_app.config['STATIC_PATH'], 'world_cities.json'))
-            .add(
-            "C Weight",
-            ab,
-            type_=GeoType.SCATTER,
-        )
-            .add(
-            "geo",
-            od,
-            type_=GeoType.LINES,
-            # effect_opts=opts.EffectOpts(symbol=SymbolType.DIAMOND, symbol_size=5, color="blue",),
-            linestyle_opts=opts.LineStyleOpts(curve=0.3),
-        )
-            .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
-            .set_global_opts(title_opts=opts.TitleOpts(title="TSN LINES")
-                             , visualmap_opts=opts.VisualMapOpts(min_=min_data, max_=max_data)
-                             )
-    )
-
-    return render_template('dashboard/testdashboard.html',
-                           c_data=c.dump_options())
+# @dashboard_bp.route('/test')
+# def testdashboard():
+#     c = (
+#         Geo()
+#             .add_schema(maptype="world")
+#             .add_coordinate_json(json_file=os.path.join(current_app.config['STATIC_PATH'], 'world_cities.json'))
+#             .add(
+#             "C Weight",
+#             ab,
+#             type_=GeoType.SCATTER,
+#         )
+#             .add(
+#             "geo",
+#             od,
+#             type_=GeoType.LINES,
+#             # effect_opts=opts.EffectOpts(symbol=SymbolType.DIAMOND, symbol_size=5, color="blue",),
+#             linestyle_opts=opts.LineStyleOpts(curve=0.3),
+#         )
+#             .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
+#             .set_global_opts(title_opts=opts.TitleOpts(title="TSN LINES")
+#                              , visualmap_opts=opts.VisualMapOpts(min_=min_data, max_=max_data)
+#                              )
+#     )
+#
+#     return render_template('dashboard/testdashboard.html',
+#                            c_data=c.dump_options())
