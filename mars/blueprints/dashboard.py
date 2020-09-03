@@ -14,16 +14,6 @@ from mars.models import Dashboard
 dashboard_bp = Blueprint('dashboard', __name__)
 
 
-# data = pd.read_csv(r"D:\python\test-pyechart\OE.csv")
-# ab = []
-# od = []
-# for index, row in data.iterrows():
-#     ab.append([row['DEST CITY'], row['CW']])
-#     od.append([row['ORIGIN CITY'], row['DEST CITY']])
-# min_data = min([d[1] for d in ab])
-# max_data = max([d[1] for d in ab])
-
-
 @dashboard_bp.route('/')
 @login_required
 @permission_required('MODERATE')
@@ -39,41 +29,38 @@ def tvdashboard():
 
 
 @dashboard_bp.route('/ededashboard')
-def ede_dashboard():
+def ededashboard():
     headers = ['File', 'Client', 'system_destin', 'Input_Ctl#', 'Output_Ctl#', 'Event', 'Event Remarks', 'Event Date',
                'Initial Trigger Date', 'Initial Trigger Branch', 'Last Error Date', 'Dept', 'Create User', 'Error Count'
-                , 'Error Message']
+        , 'Error Message']
     ede = pd.read_csv(r"\\tsn-comm01\sys\ftp\EDIErrors\DailyEDE_Dash.csv", names=headers)
     ede['Date_Diff'] = (datetime.datetime.today() - pd.to_datetime(ede['Last Error Date'])).dt.days
-    days_outstanding = ede.groupby('Date_Diff')['Error Count'].sum()
-    ede_by_op_count = ede.groupby('Create User')['File'].count()
-    ede_by_op_days = ede.groupby('Create User')['Date_Diff'].mean()
+    date_outstanding = ede.groupby('Date_Diff')['Error Count'].sum()
+    ede_count = ede.groupby('Create User')['File'].count()
+    ede_days = ede.groupby('Create User')['Date_Diff'].mean().round()
 
     bar = (
-        Bar({"theme": ThemeType.DARK})
-            .add_xaxis(list(ede_by_op_count.index))
-            .add_yaxis("EDE by Create User", ede_by_op_days.to_list(),
-                       label_opts=opts.LabelOpts(is_show=True), )
-            # .add_yaxis("days outstanding", ede_by_op_count.to_list())
-            .set_global_opts(tooltip_opts=opts.TooltipOpts(
-                            is_show=True, trigger="axis", axis_pointer_type="cross"),
-            ),
-        )
+        Bar(init_opts=opts.InitOpts(theme=ThemeType.DARK))
+            .add_xaxis(list(ede_count.index))
+            .add_yaxis("EDE by Create User", ede_count.to_list(),
+                       label_opts=opts.LabelOpts(is_show=True))
+    )
 
     line = (
-        Line({"theme": ThemeType.DARK})
-            .add_xaxis(list(ede_by_op_count.index))
+        Line(init_opts=opts.InitOpts(theme=ThemeType.DARK))
+            .add_xaxis(list(ede_count.index))
+            .add_yaxis("ede_by_op_days",
+                       ede_days.to_list(),
+                       z_level=1,
+                       label_opts=opts.LabelOpts(is_show=True), )
             .add_yaxis("days outstanding",
-                       ede_by_op_count.to_list(),
-                       label_opts=opts.LabelOpts(is_show=False),
-            )
+                       date_outstanding.to_list(),
+                       z_level=2,
+                       label_opts=opts.LabelOpts(is_show=True), )
     )
 
     bar.overlap(line)
-    return render_template('dashboard/ede.html', bar=bar.dump_options()
-                           )
-
-
+    return render_template('dashboard/ede.html', bar=bar.dump_options())
 
 
 @dashboard_bp.route('/tianjin')
@@ -81,39 +68,12 @@ def tianjin():
     maptianjin = (
         Geo()
             .add_schema(maptype="天津")
-            .add_coordinate("天津港", 117.4205, 38.5908)  # 39°0′N 117°48′
-            .add("Tianjin", [('天津港', 'instruction')],
-                 type_=GeoType.SCATTER, )
-            .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
+            .add_coordinate("Expeditors-TSN", 117.388737, 39.165105)
+            .add_coordinate("Tianjin Sea Port", 117.721901, 38.963799)
+            .add("Tianjin", [('Expeditors-TSN', 38), ('Tianjin Sea Port', 21)],
+                 type_=GeoType.EFFECT_SCATTER, )
+            .set_series_opts(label_opts=opts.LabelOpts(is_show=True))
             .set_global_opts(
         )
     )
     return render_template('dashboard/tianjin.html', maptianjin=maptianjin.dump_options())
-
-
-# @dashboard_bp.route('/test')
-# def testdashboard():
-#     c = (
-#         Geo()
-#             .add_schema(maptype="world")
-#             .add_coordinate_json(json_file=os.path.join(current_app.config['STATIC_PATH'], 'world_cities.json'))
-#             .add(
-#             "C Weight",
-#             ab,
-#             type_=GeoType.SCATTER,
-#         )
-#             .add(
-#             "geo",
-#             od,
-#             type_=GeoType.LINES,
-#             # effect_opts=opts.EffectOpts(symbol=SymbolType.DIAMOND, symbol_size=5, color="blue",),
-#             linestyle_opts=opts.LineStyleOpts(curve=0.3),
-#         )
-#             .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
-#             .set_global_opts(title_opts=opts.TitleOpts(title="TSN LINES")
-#                              , visualmap_opts=opts.VisualMapOpts(min_=min_data, max_=max_data)
-#                              )
-#     )
-#
-#     return render_template('dashboard/testdashboard.html',
-#                            c_data=c.dump_options())
