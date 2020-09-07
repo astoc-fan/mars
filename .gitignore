@@ -151,5 +151,5 @@ cython_debug/
 /whooshee/
 /migrations/
 
-*.db
-!/data-dev.db
+/data-dev.db
+
