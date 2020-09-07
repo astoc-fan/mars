@@ -1,7 +1,7 @@
 import datetime
 
 import pandas as pd
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, current_app
 from flask_login import login_required
 from pyecharts import options as opts
 from pyecharts.charts import Geo, Bar, Line
@@ -77,3 +77,40 @@ def tianjin():
         )
     )
     return render_template('dashboard/tianjin.html', maptianjin=maptianjin.dump_options())
+
+
+@dashboard_bp.route('/ocean_export_lines')
+def ocean_export_lines():
+    data = pd.read_csv(r"F:\ftp\erbranch\OEin24hrs\data.csv")
+    chargeable_weight = []
+    origin_dest = []
+    for index, row in data.iterrows():
+        chargeable_weight.append([row['DEST CITY'], row['CW']])
+        origin_dest.append([row['ORIGIN CITY'], row['DEST CITY']])
+    min_data = min([d[1] for d in chargeable_weight])
+    max_data = max([d[1] for d in chargeable_weight])
+    c = (
+        Geo()
+            .add_schema(maptype="world",is_roam=False)
+            .add_coordinate_json(json_file=current_app.config['STATIC_PATH']+r"\world_cities.json")
+            .add(
+            "Chargeable Weight",
+            chargeable_weight,
+            type_=GeoType.EFFECT_SCATTER,
+        )
+            .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
+            .add(
+            "geo",
+            origin_dest,
+            type_=GeoType.LINES,
+            # is_polyline = True,
+            # effect_opts=opts.EffectOpts(symbol=SymbolType.DIAMOND, symbol_size=5, color="blue",),
+            linestyle_opts=opts.LineStyleOpts(curve=0.3, width=2, opacity=0.2, color='Red'),
+        )
+            .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
+            .set_global_opts(title_opts=opts.TitleOpts(title="TSN Ocean Export LINES in 24 Hrs")
+                             ,visualmap_opts=opts.VisualMapOpts(min_=min_data, max_=max_data)
+                             )
+    )
+    return render_template('dashboard/ocean_export_lines.html', geo=c.dump_options())
+

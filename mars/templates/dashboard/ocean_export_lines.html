@@ -1,0 +1,31 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Ocean Export Lines In 24 Hrs{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-body">
+                    <h2>Ocean Export Lines In 24 Hrs</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card bg-secondary mb-6">
+                <div id="main" class="card-body" style="height: 800px">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'),'shine');
+        // 指定图表的配置项和数据
+        var option = {{ geo | safe }};
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+{% endblock %}
