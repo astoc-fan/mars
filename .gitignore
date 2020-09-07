@@ -152,3 +152,4 @@ cython_debug/
 /migrations/
 
 *.db
+!/data-dev.db
