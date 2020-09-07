@@ -153,3 +153,4 @@ cython_debug/
 
 /data-dev.db
 
+mars/static/js/echarts/
