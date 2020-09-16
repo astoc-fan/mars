@@ -3,7 +3,7 @@ import datetime
 
 def myscript():
     ref = []
-    for i in range(5):
+    for i in range(10):
         ref.append(str(datetime.datetime.now())+' - '+str(i))
     return ref
 

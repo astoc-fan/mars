@@ -22,7 +22,12 @@ def rates():
     return render_template('tools/rates.html', last10=last10)
 
 
-@tools_bp.route('/scripts', methods=['GET', 'POST'])
+@tools_bp.route('/scripts')
 def scripts():
+    return render_template('tools/scripts.html')
+
+
+@tools_bp.route('/myscripts')
+def myscripts():
     ref = myscript()
     return render_template('tools/scripts.html', ref=ref)
