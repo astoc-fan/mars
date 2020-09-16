@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/nav.html' import render_breadcrumb_item %}
+{% block title %}Scripts{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('tools.index', 'Tools') }}
+            {{ render_breadcrumb_item('tools.rates', 'Scripts') }}
+        </ol>
+    </nav>
+
+    <div class="page-header">
+        <p>
+        <h2>Run Scripts
+            <small class="text-muted"><span class="fas fa-calendar-alt"></span> {{ moment().format('YYYY-MM-DD') }}
+            </small>
+        </h2>
+        </p>
+    </div>
+
+    <div class="container">
+        {% for res in ref %}
+            <p> {{ res }} </p>
+        {% endfor %}
+    </div>
+{% endblock %}
