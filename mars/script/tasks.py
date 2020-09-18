@@ -43,8 +43,7 @@ def spider_rates():
     # new.to_csv(r'\\tsn-comm01\sys\ftp\erbranch\rates\rates.csv', index=False, header=True, encoding='utf-8')
     new.columns = ['currency', 'currency_abbr', 'price_exch_buy', 'price_cash_buy', 'price_exch_sell',
                   'price_cash_sell', 'price_boc_mid', 'publish']
-    basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-
+    basedir = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
     conn = sqlite3.connect(os.path.join(basedir, 'data-dev.db'))
     new.to_sql('rates', con=conn, if_exists='append', index=False)
 
