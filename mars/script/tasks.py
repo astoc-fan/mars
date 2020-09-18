@@ -37,7 +37,7 @@ def spider_rates():
     col_name.insert(1, 'Currency')
     new['Currency'] = pd.Series(currency_en)
     new = new.reindex(columns=col_name)
-    print(new)
+    # print(new)
     # html = new.to_html(os.getcwd() + r'.\files.html', escape=False, index=False, sparsify=False, border=1,
     #                    index_names=False, header=True, encoding='utf-8')
     # new.to_csv(r'\\tsn-comm01\sys\ftp\erbranch\rates\rates.csv', index=False, header=True, encoding='utf-8')
