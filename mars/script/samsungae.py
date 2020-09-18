@@ -158,17 +158,17 @@ def samsung():
         reformat_file(pdffile)
         result.append(pdffile + 'scanned.')
 
-    # ftp = ftp_connect()
-    # remote_path = "/prod/app/edoc/edocworkers/current/work/images/inbox"
-    # bufsize = 1024
-    # files = [fn for root, dirs, files in os.walk(index_path) for fn in files]
-    # for file in files:
-    #     fp = open(index_path + '\\' + file, 'rb')
-    #     ftp.storbinary('STOR ' + remote_path + '/' + file, fp, bufsize)  # 上传文件
-    #     fp.close()  # 关闭文件
-    #     logging.info(file + ' scanned.')
-    #     os.remove(index_path + '\\' + file)
-    # ftp.quit()
+    ftp = ftp_connect()
+    remote_path = "/prod/app/edoc/edocworkers/current/work/images/inbox"
+    bufsize = 1024
+    files = [fn for root, dirs, files in os.walk(index_path) for fn in files]
+    for file in files:
+        fp = open(index_path + '\\' + file, 'rb')
+        ftp.storbinary('STOR ' + remote_path + '/' + file, fp, bufsize)  # 上传文件
+        fp.close()  # 关闭文件
+        logging.info(file + ' scanned.')
+        os.remove(index_path + '\\' + file)
+    ftp.quit()
     result.append('completed')
     return result
 
