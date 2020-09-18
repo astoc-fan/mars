@@ -5,6 +5,7 @@ from flask import render_template, Blueprint, current_app
 from mars.extensions import db
 from mars.models import Rates
 from mars.script.myscript import myscript
+from mars.script.samsungae import samsung
 
 tools_bp = Blueprint('tools', __name__)
 
@@ -29,5 +30,6 @@ def scripts():
 
 @tools_bp.route('/myscripts')
 def myscripts():
-    ref = myscript()
-    return render_template('tools/scripts.html', ref=ref)
+    # exec("py 'D:\\python\\mars\\mars\\script\\samsungae.py'")
+    res = samsung()
+    return render_template('tools/scripts.html',ref=res)

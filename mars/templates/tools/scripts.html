@@ -19,8 +19,16 @@
     </div>
 
     <div class="container">
-        {% for res in ref %}
-            <pre>{{ res }}</pre>
-        {% endfor %}
+
+    </div>
+    <div class="card text-white bg-dark">
+        <div class="card-header">Result</div>
+        <div class="card-body">
+            <p class="card-text">
+                {% for res in ref %}
+                    <pre style="color: white">{{ res }}</pre>
+                {% endfor %}
+            </p>
+        </div>
     </div>
 {% endblock %}
