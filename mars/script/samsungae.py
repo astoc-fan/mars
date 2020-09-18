@@ -98,7 +98,7 @@ def extract_content(htmlfile):
                                                           })
     csv_name = os.path.splitext(htmlfile)[0]+r'.csv'
     csv = grouped.to_csv(csv_name, index=True, header=True, encoding='utf_8_sig')
-
+    return csv_name
 
 def get_hawb(sr):
     source = r'F:\Groups\Air Export\customer service 2013\JG--CS 2019-2020\TSLED tracking report EI--2020.09.xlsx'
@@ -143,18 +143,20 @@ def ftp_connect():
 def samsung():
     result = []
     for email in getfilenames(input_path, filelist_out=[], file_ext='.msg'):
-        result.append('Processing '+email)
+        result.append('Processing '+email+'...')
         get_content(email)
         os.remove(email)
-        result.append('Processing ' + email + 'completed.')
+        result.append('Processing ' + email + ' completed.')
     for htmlfile in getfilenames(input_path, filelist_out=[], file_ext='.html'):
-        result.append('Analyse '+htmlfile)
-        extract_content(htmlfile)
+        result.append('Analysing '+htmlfile+'...')
+        csv = extract_content(htmlfile)
+        result.append('Convert to ' + csv + '.')
         temp_folder = os.path.splitext(htmlfile)[0]+r'_files'
         shutil.rmtree(temp_folder)
         os.remove(htmlfile)
     for pdffile in getfilenames(working_path, filelist_out=[], file_ext='.pdf'):
         reformat_file(pdffile)
+        result.append(pdffile + 'scanned.')
 
     # ftp = ftp_connect()
     # remote_path = "/prod/app/edoc/edocworkers/current/work/images/inbox"
