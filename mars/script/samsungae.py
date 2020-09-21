@@ -130,7 +130,7 @@ def reformat_file(pdffile):
 
 
 def ftp_connect():
-    ftp_server = 'edoc.tsn.ei'
+    ftp_server = 'edoc.bjs.ei'
     username = 'edocftp'
     password = 'capture2'
     ftp = FTP()
