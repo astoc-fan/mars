@@ -9,7 +9,18 @@
         <p>Welcome back, {{ current_user.name }}!</p>
 
         <div class="card-columns">
+            {% if current_user.can('E-INVOICE') %}
+                <div class="card bg-secondary mb-4">
+                    <h5 class="card-header"><span class="fas fa-bell"></span> E-Tax Invoice</h5>
+                    <div class="list-group list-group-flush">
+                        <a href="{{ url_for('e_invoice.index') }}" class="list-group-item list-group-item-action">
+                            Invoice Customers Maintain
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
 
+            {% if current_user.can('MODERATE') %}
                 <div class="card bg-secondary mb-4">
                     <h5 class="card-header"><span class="fas fa-bell"></span> Pre-Alert</h5>
                     <div class="list-group list-group-flush">
@@ -24,8 +35,9 @@
                         </a>
                     </div>
                 </div>
+            {% endif %}
 
-
+            {% if current_user.can('MODERATE') %}
             <div class="card bg-secondary mb-4">
                 <h5 class="card-header"><span class="fas fa-chart-line"></span> Dashboard</h5>
                 <div class="list-group list-group-flush">
@@ -50,7 +62,7 @@
                     </a>
                 </div>
             </div>
-
+            {% endif %}
 
             <div class="card bg-secondary mb-4">
                 <h5 class="card-header"><span class="fas fa-toolbox"></span> Tools</h5>

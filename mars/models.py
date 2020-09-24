@@ -1,10 +1,10 @@
-import os
 from datetime import datetime
 
 from flask import current_app
 # from flask_avatars import Identicon
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from mars.extensions import db, whooshee
 
 # relationship table
@@ -30,9 +30,9 @@ class Role(db.Model):
     def init_role():
         roles_permissions_map = {
             'Locked': [],
-            'User': ['PRE-ALERT'],
-            'Superuser': ['PRE-ALERT', 'MODERATE'],
-            'Administrator': ['PRE-ALERT', 'MODERATE', 'ADMINISTER']
+            'User': ['PRE-ALERT', 'E-INVOICE'],
+            'Superuser': ['PRE-ALERT', 'E-INVOICE', 'MODERATE'],
+            'Administrator': ['PRE-ALERT', 'E-INVOICE', 'MODERATE', 'ADMINISTER']
         }
 
         for role_name in roles_permissions_map:
@@ -63,6 +63,7 @@ class User(db.Model, UserMixin):
     locked = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=True)
     customers = db.relationship('Customer', back_populates='user')
+    invcustomers = db.relationship('Inv_Customer', back_populates='user')
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     role = db.relationship('Role', back_populates='users')
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
@@ -74,25 +75,25 @@ class User(db.Model, UserMixin):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         self.set_role()
-        self.set_department()
+        # self.set_department()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def set_role(self):
-        if self.role is None:
+        if self.role_id is None:
             if self.email == current_app.config['MARS_ADMIN_EMAIL']:
-                self.role = Role.query.filter_by(name='Administrator').first()
+                self.role_id = 4  # Admin
             else:
-                self.role = Role.query.filter_by(name='User').first()
+                self.role_id = 2  # User
             db.session.commit()
 
     def set_department(self):
-        if self.department is None:
+        if self.department_id is None:
             if self.email == current_app.config['MARS_ADMIN_EMAIL']:
-                self.department = Department.query.filter_by(name='IS').first()
+                self.department_id = 3  # Department.query.filter_by(name='IS').first()
             else:
-                self.role = Role.query.filter_by(name='Operation').first()
+                self.department_id = 4  # Role.query.filter_by(name='Operation').first()
             db.session.commit()
 
     def validate_password(self, password):
@@ -134,6 +135,7 @@ class Department(db.Model):
     name = db.Column(db.String(20), unique=True)
     users = db.relationship('User', back_populates='department')
     customers = db.relationship('Customer', back_populates='department')
+    invcustomers = db.relationship('Inv_Customer', back_populates='department')
 
     def __repr__(self):
         return self.name
@@ -181,4 +183,19 @@ class Dashboard(db.Model):
     author = db.Column(db.String(20))
     show = db.Column(db.Boolean, default=False)
     create = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class Inv_Customer(db.Model):
+    cid = db.Column(db.Integer, primary_key=True)
+    gci = db.Column(db.String(10))
+    name = db.Column(db.String(128))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    user = db.relationship('User', back_populates='invcustomers')
+    department_id = db.Column(db.Integer, db.ForeignKey(Department.id))
+    department = db.relationship('Department', back_populates='invcustomers')
+    branch = db.Column(db.String(5))
+    user_email = db.Column(db.Text)
+    customer_email = db.Column(db.Text)
+    create = db.Column(db.DateTime, default=datetime.utcnow)
+    remark = db.Column(db.String(128))
 
