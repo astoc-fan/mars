@@ -1,9 +1,13 @@
-from flask import render_template, flash, Blueprint, redirect, url_for
+from flask import render_template, flash, Blueprint, redirect, url_for, request, current_app
 from flask_login import login_required, current_user
-
+import os
 from mars.extensions import db
-from mars.forms.e_invoice import NewInvCustomerForm
+from mars.forms.e_invoice import NewInvCustomerForm, UploadForm
 from mars.models import Inv_Customer
+from werkzeug.utils import secure_filename
+import pandas as pd
+import xlrd
+import xlrd
 
 e_invoice_bp = Blueprint('e_invoice', __name__)
 
@@ -36,8 +40,31 @@ def manage_customer():
         db.session.commit()
         flash('New customer created.', 'success')
         return redirect(url_for('e_invoice.manage_customer'))
+
+    upload_form = UploadForm()
+    if upload_form.validate_on_submit():
+        f = upload_form.customer_list.data
+        filename = f.filename
+        path = os.path.join(current_app.config['STATIC_PATH'], 'uploads', filename)
+        f.save(path)
+        df = pd.read_excel(path)
+        for index, row in df.iterrows():
+            gci = row['GCI']
+            name = row['Customer Name']
+            user_id = current_user.id
+            department_id = current_user.department_id
+            branch = row['Branch']
+            customer_email = row['Customer Emails']
+            user_email = row['Operator Emails']
+            remark = row['Remark']
+            customer = Inv_Customer(gci=gci, name=name, user_id=user_id, customer_email=customer_email,
+                                    user_email=user_email, branch=branch, department_id=department_id, remark=remark)
+            db.session.add(customer)
+            db.session.commit()
+        flash('Upload success.', 'success')
+        return redirect(url_for('e_invoice.manage_customer'))
     return render_template('e_invoice/manage_customer.html', customers=customers, customer_count=customer_count,
-                           form_new_customer=form_new_customer)
+                           form_new_customer=form_new_customer, upload_form=upload_form)
 
 
 @e_invoice_bp.route('/customer/edit/<int:customer_id>', methods=['GET', 'POST'])
@@ -74,3 +101,10 @@ def delete_customer(customer_id):
     db.session.commit()
     flash('Customer deleted.', 'success')
     return redirect(url_for('e_invoice.manage_customer'))
+
+
+@e_invoice_bp.route('/inv_register')
+@login_required
+def inv_register():
+    return render_template('e_invoice/inv_register.html')
+

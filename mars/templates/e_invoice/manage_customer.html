@@ -18,11 +18,15 @@
     </div>
 
     <!-- Button trigger modal -->
-    <p>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newCustomer">
-            New Customer
-        </button>
-    </p>
+
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newCustomer">
+        New Customer
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bulkUpload">
+        Bulk Upload
+    </button>
+
     <!-- Modal -->
     <div class="modal fade" id="newCustomer" tabindex="-1" role="dialog" aria-labelledby="newCustomer"
          aria-hidden="true">
@@ -46,23 +50,28 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="editCustomer" tabindex="-1" role="dialog" aria-labelledby="editCustomer"
+    <div class="modal fade" id="bulkUpload" tabindex="-1" role="dialog" aria-labelledby="bulkUpload"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Customer: xxx</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Bulk Upload</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    {#                    {{ render_form(form) }}#}
+                    <label for="exampleInputFile">Bulk Upload new customers. Please download sample file
+                        first.</label>
+                    <form method="post" enctype="multipart/form-data">
+                        {{ render_form(upload_form) }}
+                    </form>
+                    <small id="fileHelp" class="form-text text-muted">Only support xls or xlsx file.</small>
                 </div>
-                {#                <div class="modal-footer">#}
-                {#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
-                {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
-                {#                </div>#}
+                <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {#                    <button type="button" class="btn btn-primary">Save changes</button>#}
+                </div>
             </div>
         </div>
     </div>
@@ -123,7 +132,7 @@
                         <form method="post" class="inline" style="display: inline;"
                               action="{{ url_for('e_invoice.delete_customer', customer_id=customer.cid) }}">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <input type="submit" class="btn btn-outline-primary btn-xs" value="X" title="Delete"
+                            <input type="submit" class="btn btn-outline-primary btn-xs" value="&times;" title="Delete"
                                    onclick="return confirm('Are you sure?')"/>
                         </form>
                         </td>
