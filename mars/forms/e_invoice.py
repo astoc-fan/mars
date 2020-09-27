@@ -26,3 +26,10 @@ class NewInvCustomerForm(FlaskForm):
 class UploadForm(FlaskForm):
     customer_list = FileField('Bulk upload customers', validators=[FileRequired(), FileAllowed(['xls', 'xlsx'])])
     submit = SubmitField()
+
+
+class Upload_inv_register_form(FlaskForm):
+    inv_register = FileField('Upload Inv Register', validators=[FileRequired(), FileAllowed(['xls', 'xlsx', 'csv'])])
+    submit = SubmitField()
+
+

@@ -1,0 +1,28 @@
+{% extends 'e_invoice/index.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}Manage Customer{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('e_invoice.index', 'E-Tax Invoice') }}
+            {{ render_breadcrumb_item('e_invoice.inv_register_manage', 'Invoice Register') }}
+        </ol>
+    </nav>
+
+    <div class="page-header">
+        <h2>Invoice Register
+            <small class="text-muted"> Invoice Count: {{ inv_count }}</small>
+        </h2>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card bg-secondary">
+            <div class="card-body">
+                {{ render_form(Upload_inv_form) }}
+            </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

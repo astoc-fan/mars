@@ -1,13 +1,12 @@
-from flask import render_template, flash, Blueprint, redirect, url_for, request, current_app
-from flask_login import login_required, current_user
 import os
-from mars.extensions import db
-from mars.forms.e_invoice import NewInvCustomerForm, UploadForm
-from mars.models import Inv_Customer
-from werkzeug.utils import secure_filename
+
 import pandas as pd
-import xlrd
-import xlrd
+from flask import render_template, flash, Blueprint, redirect, url_for, current_app
+from flask_login import login_required, current_user
+import datetime
+from mars.extensions import db
+from mars.forms.e_invoice import NewInvCustomerForm, UploadForm, Upload_inv_register_form
+from mars.models import Inv_Customer, inv_register
 
 e_invoice_bp = Blueprint('e_invoice', __name__)
 
@@ -103,8 +102,71 @@ def delete_customer(customer_id):
     return redirect(url_for('e_invoice.manage_customer'))
 
 
-@e_invoice_bp.route('/inv_register')
+@e_invoice_bp.route('/inv_register', methods=['GET', 'POST'])
 @login_required
-def inv_register():
-    return render_template('e_invoice/inv_register.html')
+def inv_register_manage():
+    inv_count = inv_register.query.count()
+    inves = inv_register.query.all()
+    Upload_inv_form = Upload_inv_register_form()
+    if Upload_inv_form.validate_on_submit():
+        f = Upload_inv_form.inv_register.data
+        filename = f.filename
+        path = os.path.join(current_app.config['STATIC_PATH'], 'uploads', filename)
+        f.save(path)
+        df = pd.read_csv(path, encoding='GBK')
+        for index, row in df.iterrows():
+            invoice_type = row['Invoice Type']
+            bill_to_gci = row['Bill To GCI']
+            name = row['Name']
+            bill_to_gci_br = row['Bill to GCI Br']
+            cc = row['CC']
+            usagedistinction = row['UsageDistinction']
+            ei_invoice_ref = row['EI Invoice Ref']
+            file = row['File']
+            tc = row['TC']
+            canceling_inv_reference = row['Canceling Inv Reference']
+            issue_date = row['Issue Date']
+            issue_date = datetime.strptime(row['Issue Date'], '%Y-%M-%d')  #
+            issue_date_month = row['Issue Date Month']
+            issue_date_year = row['Issue Date Year']
+            amount = row['Amount']
+            currency = row['Currency']
+            foreign_amount = row['Foreign Amount']
+            foreign_currency = row['Foreign Currency']
+            vat_amount = row['VAT Amount']
+            tax_invoice_status = row['Tax Invoice Status']
+            internal_tax_ref = row['Internal Tax Ref']
+            vat_invoice_ref = row['Vat Invoice Ref']
+            vat_issue_date = row['Vat Issue Date']
+            vat_issue_date_month = row['Vat Issue Date Month']
+            vat_issue_date_year = row['Vat Issue Date Year']
+            first_vat_inv_ref = row['First Vat Inv Ref']
+            first_vat_issue_date = row['First Vat Issue Date']
+            first_vat_issue_date_month = row['First Vat Issue Date Month']
+            first_vat_issue_date_year = row['First Vat Issue Date Year']
+            consol = row['Consol']
+            service_order = row['Service Order']
+            mbl = row['MBL']
+            hbl = row['HBL']
+            invoice = inv_register(invoice_type=invoice_type, bill_to_gci=bill_to_gci,
+                                   name=name, bill_to_gci_br=bill_to_gci_br,
+                                   cc=cc, usagedistinction=usagedistinction,
+                                   ei_invoice_ref=ei_invoice_ref, file=file,
+                                   tc=tc, canceling_inv_reference=canceling_inv_reference,
+                                   issue_date=issue_date, issue_date_month=issue_date_month,
+                                   issue_date_year=issue_date_year, amount=amount,
+                                   currency=currency, foreign_amount=foreign_amount,
+                                   foreign_currency=foreign_currency, vat_amount=vat_amount,
+                                   tax_invoice_status=tax_invoice_status, internal_tax_ref=internal_tax_ref,
+                                   vat_invoice_ref=vat_invoice_ref, vat_issue_date=vat_issue_date,
+                                   vat_issue_date_month=vat_issue_date_month, vat_issue_date_year=vat_issue_date_year,
+                                   first_vat_inv_ref=first_vat_inv_ref, first_vat_issue_date=first_vat_issue_date,
+                                   first_vat_issue_date_month=first_vat_issue_date_month,
+                                   first_vat_issue_date_year=first_vat_issue_date_year,
+                                   consol=consol, service_order=service_order, mbl=mbl, hbl=hbl)
+            db.session.add(invoice)
+            db.session.commit()
+        flash('Upload success.', 'success')
+        return redirect(url_for('e_invoice.inv_register_manage'))
+    return render_template('e_invoice/inv_register.html', inves=inves, Upload_inv_form=Upload_inv_form, inv_count=inv_count)
 
