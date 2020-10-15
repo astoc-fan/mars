@@ -25,4 +25,93 @@
             </div>
         </div>
     </div>
+
+        {% if inves %}
+        <table class="table-xs table-striped"
+               data-toggle="table"
+               data-search="true"
+               data-show-Columns="true"
+               data-pagination="true"
+               style="font-size: 10px;">
+            <thead>
+            <tr>
+                <th data-sortable="true" data-field="invoice_type">invoice_type</th>
+                <th data-sortable="true" data-field="bill_to_gci">bill_to_gci</th>
+                <th data-sortable="true" data-field="name">name</th>
+                <th data-sortable="true" data-field="bill_to_gci_br">bill_to_gci_br</th>
+                <th data-sortable="true" data-field="cc">cc</th>
+                <th data-sortable="true" data-field="usagedistinction">usagedistinction</th>
+                <th data-sortable="true" data-field="ei_invoice_ref">ei_invoice_ref</th>
+                <th data-sortable="true" data-field="file">file</th>
+                <th data-sortable="true" data-field="tc">tc</th>
+                <th data-sortable="true" data-field="canceling_inv_reference">canceling_inv_reference</th>
+                <th data-sortable="true" data-field="issue_date">issue_date</th>
+                <th data-sortable="true" data-field="issue_date_month">issue_date_month</th>
+                <th data-sortable="true" data-field="issue_date_year">issue_date_year</th>
+                <th data-sortable="true" data-field="amount">amount</th>
+                <th data-sortable="true" data-field="currency">currency</th>
+                <th data-sortable="true" data-field="foreign_amount">foreign_amount</th>
+                <th data-sortable="true" data-field="foreign_currency">foreign_currency</th>
+                <th data-sortable="true" data-field="vat_amount">vat_amount</th>
+                <th data-sortable="true" data-field="tax_invoice_status">tax_invoice_status</th>
+                <th data-sortable="true" data-field="internal_tax_ref">internal_tax_ref</th>
+                <th data-sortable="true" data-field="vat_invoice_ref">vat_invoice_ref</th>
+                <th data-sortable="true" data-field="vat_issue_date">vat_issue_date</th>
+                <th data-sortable="true" data-field="vat_issue_date_month">vat_issue_date_month</th>
+                <th data-sortable="true" data-field="vat_issue_date_year">vat_issue_date_year</th>
+                <th data-sortable="true" data-field="first_vat_inv_ref">first_vat_inv_ref</th>
+                <th data-sortable="true" data-field="first_vat_issue_date">first_vat_issue_date</th>
+                <th data-sortable="true" data-field="first_vat_issue_date_month">first_vat_issue_date_month</th>
+                <th data-sortable="true" data-field="first_vat_issue_date_year">first_vat_issue_date_year</th>
+                <th data-sortable="true" data-field="consol">consol</th>
+                <th data-sortable="true" data-field="service_order">service_order</th>
+                <th data-sortable="true" data-field="mbl">mbl</th>
+                <th data-sortable="true" data-field="hbl">hbl</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for inv in inves %}
+                <tr>
+                    <td>{{ inv.invoice_type }}</td>
+                    <td>{{ inv.bill_to_gci }}</td>
+                    <td>{{ inv.name }}</td>
+                    <td>{{ inv.bill_to_gci_br }}</td>
+                    <td>{{ inv.cc }}</td>
+                    <td>{{ inv.usagedistinction }}</td>
+                    <td>{{ inv.ei_invoice_ref }}</td>
+                    <td>{{ inv.file }}</td>
+                    <td>{{ inv.tc }}</td>
+                    <td>{{ inv.canceling_inv_reference }}</td>
+                    <td>{{ inv.issue_date }}</td>
+                    <td>{{ inv.issue_date_month }}</td>
+                    <td>{{ inv.issue_date_year }}</td>
+                    <td>{{ inv.amount }}</td>
+                    <td>{{ inv.currency }}</td>
+                    <td>{{ inv.foreign_amount }}</td>
+                    <td>{{ inv.foreign_currency }}</td>
+                    <td>{{ inv.vat_amount }}</td>
+                    <td>{{ inv.tax_invoice_status }}</td>
+                    <td>{{ inv.internal_tax_ref }}</td>
+                    <td>{{ inv.vat_invoice_ref }}</td>
+                    <td>{{ inv.vat_issue_date }}</td>
+                    <td>{{ inv.vat_issue_date_month }}</td>
+                    <td>{{ inv.vat_issue_date_year }}</td>
+                    <td>{{ inv.first_vat_inv_ref }}</td>
+                    <td>{{ inv.first_vat_issue_date }}</td>
+                    <td>{{ inv.first_vat_issue_date_month }}</td>
+                    <td>{{ inv.first_vat_issue_date_year }}</td>
+                    <td>{{ inv.consol }}</td>
+                    <td>{{ inv.service_order }}</td>
+                    <td>{{ inv.mbl }}</td>
+                    <td>{{ inv.hbl }}</td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="tip"><h5>No Invoices.</h5></div>
+    {% endif %}
+
 {% endblock %}

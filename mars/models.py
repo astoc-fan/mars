@@ -197,6 +197,7 @@ class Inv_Customer(db.Model):
     user_email = db.Column(db.Text)
     customer_email = db.Column(db.Text)
     create = db.Column(db.DateTime, default=datetime.utcnow)
+    to_user_only = db.Column(db.Boolean)
     remark = db.Column(db.String(128))
 
 

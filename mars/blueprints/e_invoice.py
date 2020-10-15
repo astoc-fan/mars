@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from flask import render_template, flash, Blueprint, redirect, url_for, current_app
 from flask_login import login_required, current_user
-import datetime
+from datetime import datetime
 from mars.extensions import db
 from mars.forms.e_invoice import NewInvCustomerForm, UploadForm, Upload_inv_register_form
 from mars.models import Inv_Customer, inv_register
@@ -32,9 +32,11 @@ def manage_customer():
         branch = form_new_customer.branch.data
         customer_email = form_new_customer.customer_email.data
         user_email = form_new_customer.user_email.data
+        to_user_only = form_new_customer.to_user_only
         remark = form_new_customer.remark.data
         customer = Inv_Customer(gci=gci, name=name, user_id=user_id, customer_email=customer_email,
-                                user_email=user_email, branch=branch, department_id=department_id, remark=remark)
+                                user_email=user_email, branch=branch, department_id=department_id,
+                                to_user_only=to_user_only, remark=remark)
         db.session.add(customer)
         db.session.commit()
         flash('New customer created.', 'success')
@@ -125,8 +127,7 @@ def inv_register_manage():
             file = row['File']
             tc = row['TC']
             canceling_inv_reference = row['Canceling Inv Reference']
-            issue_date = row['Issue Date']
-            issue_date = datetime.strptime(row['Issue Date'], '%Y-%M-%d')  #
+            issue_date = datetime.strptime(row['Issue Date'], '%d-%b-%y')  #
             issue_date_month = row['Issue Date Month']
             issue_date_year = row['Issue Date Year']
             amount = row['Amount']
@@ -137,11 +138,11 @@ def inv_register_manage():
             tax_invoice_status = row['Tax Invoice Status']
             internal_tax_ref = row['Internal Tax Ref']
             vat_invoice_ref = row['Vat Invoice Ref']
-            vat_issue_date = row['Vat Issue Date']
+            vat_issue_date = datetime.strptime(row['Vat Issue Date'], '%d-%b-%y')
             vat_issue_date_month = row['Vat Issue Date Month']
             vat_issue_date_year = row['Vat Issue Date Year']
             first_vat_inv_ref = row['First Vat Inv Ref']
-            first_vat_issue_date = row['First Vat Issue Date']
+            first_vat_issue_date = datetime.strptime(row['First Vat Issue Date'], '%d-%b-%y')
             first_vat_issue_date_month = row['First Vat Issue Date Month']
             first_vat_issue_date_year = row['First Vat Issue Date Year']
             consol = row['Consol']
