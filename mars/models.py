@@ -63,7 +63,7 @@ class User(db.Model, UserMixin):
     locked = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=True)
     customers = db.relationship('Customer', back_populates='user')
-    invcustomers = db.relationship('Inv_Customer', back_populates='user')
+    # invcustomers = db.relationship('Inv_Customer', back_populates='user')
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     role = db.relationship('Role', back_populates='users')
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
@@ -135,7 +135,7 @@ class Department(db.Model):
     name = db.Column(db.String(20), unique=True)
     users = db.relationship('User', back_populates='department')
     customers = db.relationship('Customer', back_populates='department')
-    invcustomers = db.relationship('Inv_Customer', back_populates='department')
+    # invcustomers = db.relationship('Inv_Customer', back_populates='department')
 
     def __repr__(self):
         return self.name
@@ -189,10 +189,10 @@ class Inv_Customer(db.Model):
     cid = db.Column(db.Integer, primary_key=True)
     gci = db.Column(db.String(10))
     name = db.Column(db.String(128))
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-    user = db.relationship('User', back_populates='invcustomers')
-    department_id = db.Column(db.Integer, db.ForeignKey(Department.id))
-    department = db.relationship('Department', back_populates='invcustomers')
+    # user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    user = db.Column(db.String(20))
+    # department_id = db.Column(db.Integer, db.ForeignKey(Department.id))
+    department = db.Column(db.String(20))
     branch = db.Column(db.String(5))
     user_email = db.Column(db.Text)
     customer_email = db.Column(db.Text)
