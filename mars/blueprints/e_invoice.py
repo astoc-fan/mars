@@ -1,12 +1,13 @@
 import os
+from datetime import datetime
 
 import pandas as pd
 from flask import render_template, flash, Blueprint, redirect, url_for, current_app
 from flask_login import login_required, current_user
-from datetime import datetime
+
 from mars.extensions import db
 from mars.forms.e_invoice import NewInvCustomerForm, UploadForm, Upload_inv_register_form
-from mars.models import Inv_Customer, inv_register
+from mars.models import Inv_Customer, inv_register, Department
 
 e_invoice_bp = Blueprint('e_invoice', __name__)
 
@@ -23,24 +24,34 @@ def index():
 def manage_customer():
     customer_count = Inv_Customer.query.count()
     customers = Inv_Customer.query.all()
+    # mydepartment = current_user.name
+    mydepartment = Department.query.filter_by(id=current_user.department_id).first_or_404()
     form_new_customer = NewInvCustomerForm()
     if form_new_customer.validate_on_submit():
         gci = form_new_customer.gci.data
         name = form_new_customer.name.data
-        user_id = current_user.id
-        department_id = current_user.department_id
+        user = form_new_customer.user.data
+        department = form_new_customer.department.data
         branch = form_new_customer.branch.data
         customer_email = form_new_customer.customer_email.data
         user_email = form_new_customer.user_email.data
-        to_user_only = form_new_customer.to_user_only
+        to_user_only = form_new_customer.to_user_only.data
         remark = form_new_customer.remark.data
-        customer = Inv_Customer(gci=gci, name=name, user_id=user_id, customer_email=customer_email,
-                                user_email=user_email, branch=branch, department_id=department_id,
-                                to_user_only=to_user_only, remark=remark)
-        db.session.add(customer)
-        db.session.commit()
-        flash('New customer created.', 'success')
+        if Inv_Customer.query.filter_by(gci=form_new_customer.gci.data, department=form_new_customer.department.data).first():
+                # and Inv_Customer.query.filter_by(
+                # department=form_new_customer.department.data)):
+            flash('Submitted customer + department is exist!', 'danger')
+        else:
+            customer = Inv_Customer(gci=gci, name=name, user=user, customer_email=customer_email,
+                                    user_email=user_email, branch=branch, department=department,
+                                    to_user_only=to_user_only, remark=remark)
+            db.session.add(customer)
+            db.session.commit()
+            flash('New customer created.', 'success')
         return redirect(url_for('e_invoice.manage_customer'))
+    form_new_customer.user.data = current_user.name
+    form_new_customer.branch.data = current_user.branch
+    form_new_customer.department.data = Department.query.filter_by(id=current_user.department_id).first_or_404()
 
     upload_form = UploadForm()
     if upload_form.validate_on_submit():
@@ -65,7 +76,7 @@ def manage_customer():
         flash('Upload success.', 'success')
         return redirect(url_for('e_invoice.manage_customer'))
     return render_template('e_invoice/manage_customer.html', customers=customers, customer_count=customer_count,
-                           form_new_customer=form_new_customer, upload_form=upload_form)
+                           form_new_customer=form_new_customer, upload_form=upload_form, mydepartment=mydepartment)
 
 
 @e_invoice_bp.route('/customer/edit/<int:customer_id>', methods=['GET', 'POST'])
@@ -79,8 +90,8 @@ def edit_customer(customer_id):
         customer.customer_email = form.customer_email.data
         customer.user_email = form.user_email.data
         customer.remark = form.remark.data
-        customer.user_id = current_user.id
-        customer.department_id = current_user.department_id
+        customer.user = current_user.id
+        customer.department = current_user.department_id
         customer.branch = form.branch.data
         db.session.commit()
         flash('Customer updated.', 'success')
