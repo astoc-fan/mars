@@ -13,8 +13,8 @@ import pythoncom
 
 
 
-path = r'F:\ftp\edoc_Auto-Index\AE_Samsung'
-# path = r'D:\python\edoc-auto-samsung-ae'
+# path = r'F:\ftp\edoc_Auto-Index\AE_Samsung'
+path = r'D:\python\edoc-auto-samsung-ae'
 
 input_path = os.path.join(path, 'input')
 working_path = os.path.join(path, 'working')

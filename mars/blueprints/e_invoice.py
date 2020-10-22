@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 import pandas as pd
-from flask import render_template, flash, Blueprint, redirect, url_for, current_app
+from flask import render_template, flash, Blueprint, redirect, url_for, current_app, send_from_directory
 from flask_login import login_required, current_user
 
 from mars.extensions import db
@@ -17,6 +17,13 @@ e_invoice_bp = Blueprint('e_invoice', __name__)
 def index():
     customer_count = Inv_Customer.query.count()
     return render_template('e_invoice/index.html', customer_count=customer_count)
+
+
+@e_invoice_bp.route("/<filename>", methods=['GET'])
+def download_file(filename):
+    # 需要知道2个参数, 第1个参数是本地目录的path, 第2个参数是文件名(带扩展名)
+    directory = os.getcwd()  # 假设在当前目录
+    return send_from_directory(directory, filename, as_attachment=True)
 
 
 @e_invoice_bp.route('/manage/customer', methods=['GET', 'POST'])
