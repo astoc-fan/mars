@@ -20,19 +20,19 @@ class NewInvCustomerForm(FlaskForm):
     remark = StringField('Remark')
     submit = SubmitField()
 
-    def __init__(self):
+    def __init__(self, customer=None):
         super(NewInvCustomerForm, self).__init__()
         self.department.choices = [(department.name, department.name)
                                    for department in Department.query.order_by(Department.name).all()]
         self.department.default = Department.query.filter_by(id=current_user.department_id).first_or_404()
+        self.customer = customer
 
     # def validate_gci(self, field):
-    #     if Inv_Customer.query.filter_by(gci=field.data).first() and Inv_Customer.query.filter_by(department=field.data):
+    #     if Inv_Customer.query.filter_by(gci=self.gci.data, department=self.department.data).first() and :
     #         raise ValidationError('The GCI and Department is already exist.')
 
 
 # class EditInvCustomerForm(FlaskForm):
-
 
 
 class UploadForm(FlaskForm):

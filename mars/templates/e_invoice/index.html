@@ -21,15 +21,15 @@
 
             </div>
         </div>
-        <div class="col-lg-2">
-            <div class="card bg-secondary">
-                <div class="card-header">Invoice Register</div>
-                <div class="card-body">
-                    <h4 class="card-title">Invoices: {{ inv_count|default('0') }}</h4>
-                    <p class="card-text">For accounting only.</p>
-                    <a class="btn btn-primary" href="{{ url_for('e_invoice.inv_register_manage') }}">Manage</a>
-                </div>
-            </div>
-        </div>
+{#        <div class="col-lg-2">#}
+{#            <div class="card bg-secondary">#}
+{#                <div class="card-header">Invoice Register</div>#}
+{#                <div class="card-body">#}
+{#                    <h4 class="card-title">Invoices: {{ inv_count|default('0') }}</h4>#}
+{#                    <p class="card-text">For accounting only.</p>#}
+{#                    <a class="btn btn-primary" href="{{ url_for('e_invoice.inv_register_manage') }}">Manage</a>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
     </div>
 {% endblock %}

@@ -38,9 +38,7 @@ def manage_customer():
         to_user_only = form_new_customer.to_user_only.data
         remark = form_new_customer.remark.data
         if Inv_Customer.query.filter_by(gci=form_new_customer.gci.data, department=form_new_customer.department.data).first():
-                # and Inv_Customer.query.filter_by(
-                # department=form_new_customer.department.data)):
-            flash('Submitted customer + department is exist!', 'danger')
+            flash('The customer + department is already exist!', 'danger')
         else:
             customer = Inv_Customer(gci=gci, name=name, user=user, customer_email=customer_email,
                                     user_email=user_email, branch=branch, department=department,
@@ -49,7 +47,8 @@ def manage_customer():
             db.session.commit()
             flash('New customer created.', 'success')
         return redirect(url_for('e_invoice.manage_customer'))
-    form_new_customer.user.data = current_user.name
+    form_new_customer.user.render_kw = {'readonly': True}
+    form_new_customer.user.data = current_user.username
     form_new_customer.branch.data = current_user.branch
     form_new_customer.department.data = Department.query.filter_by(id=current_user.department_id).first_or_404()
 
@@ -63,18 +62,20 @@ def manage_customer():
         for index, row in df.iterrows():
             gci = row['GCI']
             name = row['Customer Name']
-            user_id = current_user.id
-            department_id = current_user.department_id
+            user = current_user.username
+            department = str(mydepartment)
             branch = row['Branch']
             customer_email = row['Customer Emails']
             user_email = row['Operator Emails']
             remark = row['Remark']
-            customer = Inv_Customer(gci=gci, name=name, user_id=user_id, customer_email=customer_email,
-                                    user_email=user_email, branch=branch, department_id=department_id, remark=remark)
+            to_user_only = False
+            customer = Inv_Customer(gci=gci, name=name, user=user, customer_email=customer_email, to_user_only=to_user_only,
+                                    user_email=user_email, branch=branch, department=department, remark=remark)
             db.session.add(customer)
             db.session.commit()
         flash('Upload success.', 'success')
         return redirect(url_for('e_invoice.manage_customer'))
+
     return render_template('e_invoice/manage_customer.html', customers=customers, customer_count=customer_count,
                            form_new_customer=form_new_customer, upload_form=upload_form, mydepartment=mydepartment)
 
@@ -87,21 +88,31 @@ def edit_customer(customer_id):
     if form.validate_on_submit():
         customer.gci = form.gci.data
         customer.name = form.name.data
+        customer.user = form.user.data
+        # customer.department = form.department.data
+        customer.branch = form.branch.data
         customer.customer_email = form.customer_email.data
         customer.user_email = form.user_email.data
+        customer.to_user_only = form.to_user_only.data
         customer.remark = form.remark.data
-        customer.user = current_user.id
-        customer.department = current_user.department_id
-        customer.branch = form.branch.data
-        db.session.commit()
-        flash('Customer updated.', 'success')
-        return redirect(url_for('e_invoice.manage_customer'))
+        if customer.gci != form.gci.data and Inv_Customer.query.filter_by(gci=form.gci.data, department=form.department.data).first():
+            flash('Submitted customer + department is already exist!', 'danger')
+        else:
+            db.session.commit()
+            flash('Customer updated.', 'success')
+            return redirect(url_for('e_invoice.manage_customer'))
+
+    form.gci.render_kw = {'readonly': True}
+    form.department.render_kw = {'readonly': True}
     form.gci.data = customer.gci
     form.name.data = customer.name
+    form.user.data = customer.user
+    form.department.data = customer.department
+    form.branch.data = customer.branch
     form.customer_email.data = customer.customer_email
     form.user_email.data = customer.user_email
+    form.to_user_only = customer.to_user_only
     form.remark.data = customer.remark
-    form.branch.data = customer.branch
     return render_template('e_invoice/edit_customer.html', form=form, customer=customer)
 
 

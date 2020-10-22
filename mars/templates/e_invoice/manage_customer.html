@@ -15,7 +15,6 @@
         <h2>Customer
             <small class="text-muted">{{ customer_count }}</small>
         </h2>
-        <h2>{{ mydepartment }}</h2>
     </div>
 
     <!-- Button trigger modal -->
@@ -28,7 +27,7 @@
         Bulk Upload
     </button>
 
-    <!-- Modal -->
+    <!-- Modal new customer-->
     <div class="modal fade" id="newCustomer" tabindex="-1" role="dialog" aria-labelledby="newCustomer"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -50,7 +49,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal bulk upload -->
     <div class="modal fade" id="bulkUpload" tabindex="-1" role="dialog" aria-labelledby="bulkUpload"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -84,20 +83,21 @@
                data-search="true"
                data-show-Columns="true"
                data-pagination="true"
-               style="font-size: 12px;">
+               style="font-size: 11px;">
             <thead>
             <tr>
                 <th data-sortable="true" data-field="gci">Gci</th>
                 <th data-sortable="true" data-field="name">Name</th>
-                <th data-sortable="true" data-field="user">User</th>
                 <th data-sortable="true" data-field="branch">Branch</th>
                 <th data-sortable="true" data-field="department">Department</th>
+                <th data-sortable="true" data-field="user">User</th>
                 <th data-sortable="true" data-field="customer_email">Customer Emails</th>
                 <th data-sortable="true" data-field="user_email">User Emails</th>
+                <th data-sortable="true" data-field="to_user_only">to_user_only?</th>
                 <th data-sortable="true" data-field="remark">Remark</th>
-{#                {% if current_user.is_admin %}#}
-                    <th>Actions</th>
-{#                {% endif %}#}
+                {#                {% if current_user.is_admin %}#}
+                <th>Actions</th>
+                {#                {% endif %}#}
             </tr>
             </thead>
             <tbody>
@@ -105,11 +105,12 @@
                 <tr>
                     <td>{{ customer.gci }}</td>
                     <td>{{ customer.name }}</td>
-                    <td>{{ customer.user }}</td>
                     <td>{{ customer.branch }}</td>
                     <td>{{ customer.department }}</td>
+                    <td>{{ customer.user }}</td>
                     <td>{{ customer.customer_email }}</td>
                     <td>{{ customer.user_email }}</td>
+                    <td>{% if customer.to_user_only %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}</td>
                     <td>{{ customer.remark }}</td>
                     {% if current_user.is_admin %}
                         <td>
@@ -120,11 +121,17 @@
                             <form method="post" class="inline" style="display: inline;"
                                   action="{{ url_for('e_invoice.delete_customer', customer_id=customer.cid) }}">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <input type="submit" class="btn btn-outline-primary btn-xs" value="X" title="Delete"
-                                       onclick="return confirm('Are you sure?')"/>
+                                <input type="submit" class="btn btn-outline-primary btn-xs " value="x" title="Delete"
+                                       onclick="return confirm('Are you sure?')">
                             </form>
+                            {#                            <form method="post" class="inline" style="display: inline;"#}
+{#                                  action="{{ url_for('e_invoice.delete_customer', customer_id=customer.cid) }}">#}
+{#                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">#}
+{#                                <input type="submit" class="btn btn-outline-primary btn-xs" value="&times;" title="Delete"#}
+{#                                       onclick="return confirm('Are you sure?')"/>#}
+{#                            </form>#}
                         </td>
-                    {% elif current_user.can('E-INVOICE') and customer.user == current_user %}
+                    {% elif current_user.can('E-INVOICE') and customer.user == current_user.username %}
                         <td>
                         <a class="btn btn-outline-primary btn-xs" title="Edit"
                            href="{{ url_for('e_invoice.edit_customer', customer_id=customer.cid) }}"><i
