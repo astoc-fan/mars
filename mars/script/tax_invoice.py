@@ -111,7 +111,7 @@ if __name__ == '__main__':
 
     customers = tbl_customer()
     departments = tbl_department()
-    customers_details = pd.merge(customers, departments, how='left', left_on='department_id', right_on='id')
+    customers_details = pd.merge(customers, departments, how='left', left_on='department', right_on='name')
 
     invoices = pd.merge(invoices_details, customers_details, how='left', left_on=['GCI', 'dept'],
                         right_on=['gci', 'name_y'])
@@ -142,6 +142,6 @@ if __name__ == '__main__':
 
                 to = invoices.iloc[i, 21]
                 cc = invoices.iloc[i, 20]
-                # print(invoices)
+                # print(departments)
                 # print(inv_registers)
                 print(invoices_ref, short_hbl, vat_code, vat_number, department, gci, invoice_date, client, amount, to, cc)
