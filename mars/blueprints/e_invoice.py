@@ -19,10 +19,10 @@ def index():
     return render_template('e_invoice/index.html', customer_count=customer_count)
 
 
-@e_invoice_bp.route("/<filename>", methods=['GET'])
-def download_file(filename):
+@e_invoice_bp.route("/<path:filename>")
+def download(filename):
     # 需要知道2个参数, 第1个参数是本地目录的path, 第2个参数是文件名(带扩展名)
-    directory = os.getcwd()  # 假设在当前目录
+    directory = current_app.root_path + '/templates/e_invoice/'  # 假设在当前目录
     return send_from_directory(directory, filename, as_attachment=True)
 
 

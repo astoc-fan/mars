@@ -63,7 +63,9 @@
                 <div class="modal-body">
                     <label for="exampleInputFile" >Bulk Upload new customers. Please download sample file
                         first. </label>
-                    <a href="{{ url_for('e_invoice.download_file', filename='Customer_list_template.xlsx') }}">Sample File</a>
+                    <br>
+                    <a href="{{ url_for('e_invoice.download', filename='Customer_list_template.xlsx') }}">
+                        <span class="badge badge-primary">Sample File</span></a>
                     <form method="post" enctype="multipart/form-data">
                         {{ render_form(upload_form) }}
                     </form>
