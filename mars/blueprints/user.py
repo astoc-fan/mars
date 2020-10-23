@@ -47,7 +47,7 @@ def edit_profile():
 
 
 @user_bp.route('/settings/change-password', methods=['GET', 'POST'])
-@fresh_login_required
+@login_required
 def change_password():
     form = ChangePasswordForm()
     if form.validate_on_submit():
@@ -62,7 +62,7 @@ def change_password():
 
 
 @user_bp.route('/settings/change-email', methods=['GET', 'POST'])
-@fresh_login_required
+@login_required
 def change_email_request():
     form = ChangeEmailForm()
     if form.validate_on_submit():
@@ -85,7 +85,7 @@ def change_email(token):
 
 
 @user_bp.route('/settings/account/delete', methods=['GET', 'POST'])
-@fresh_login_required
+@login_required
 def delete_account():
     form = DeleteAccountForm()
     if form.validate_on_submit():
