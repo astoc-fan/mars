@@ -235,3 +235,20 @@ class inv_register(db.Model):
     mbl = db.Column(db.String(25))
     hbl = db.Column(db.String(25))
 
+
+class Invoices(db.Model):
+    iid = db.Column(db.Integer, primary_key=True)
+    tax_ref = db.Column(db.String(30))
+    tai_scan_date = db.Column(db.DateTime)
+    gci = db.Column(db.String(10))
+    customer_name = db.Column(db.String(256))
+    ei_invoice_ref = db.Column(db.String(10))
+    file = db.Column(db.String(10))
+    amount = db.Column(db.Float)
+    currency = db.Column(db.String(10))
+    vat_invoice_ref = db.Column(db.String(30))
+    department = db.Column(db.String(20))
+    status = db.Column(db.String(10))
+    user_email = db.Column(db.Text)
+    customer_email = db.Column(db.Text)
+    update_time = db.Column(db.DateTime, default=datetime.utcnow)

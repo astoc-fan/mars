@@ -1,16 +1,23 @@
+import decimal
 import os
 import re
 import sqlite3
 import pandas as pd
 import pyodbc
-import decimal
+from edoc_downloader import download_file, convert_pdf, edoc_upload, get_file_link
+from outlook_email import send_email
+from update_status import update_invoice_status
+from flask import Flask,current_app
+import mars
+
+app = mars.create_app()
 
 
 class config:
     branch = 'bjs'
     edoc_server = 'edoc.%s.ei' % branch
-    working_path = os.path.abspath((os.path.dirname(__file__)))
-    log_path = os.path.abspath((os.path.dirname(__file__))) + r'\log.csv'
+    working_path = os.path.abspath((os.path.dirname(__file__))) + r'\working'
+    # log_path = os.path.abspath((os.path.dirname(__file__))) + r'\log.csv'
     if branch == 'bjs':
         inv_register_path = open(r'F:\ftp\edoc_Auto-Index\AC_INV_bjs\PDF\Invoice-Register.csv', encoding='GB18030')
     elif branch == 'tsn':
@@ -43,14 +50,6 @@ def tbl_customer():
     return customers
 
 
-def tbl_department():
-    basedir = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-    conn = sqlite3.connect(os.path.join(basedir, 'data-dev.db'))
-    sql = 'select * from department'
-    department = pd.read_sql(sql, conn)
-    return department
-
-
 def tbl_edoc():
     edoc_database = "Driver={IBM DB2 ODBC DRIVER - DB2COPY1};Database=%s;Hostname=%s;Port=%s;Protocol=TCPIP;Uid=%s" \
                     ";Pwd=%s;" % (config.database, config.edoc_server, config.port, config.user, config.password)
@@ -62,7 +61,7 @@ def tbl_edoc():
 def get_dept(file_no):
     file_no = str(file_no)[0]
     switch = {
-        "1": "",
+        "1": "Other",
         "2": "Air Import",
         "3": "Air Export",
         "4": "Air Export",
@@ -91,7 +90,7 @@ def extract_email_address(email):
     email_regex = re.compile(pat, re.VERBOSE)
     for groups in email_regex.findall(strings):
         matches.append(groups[0])
-    email_list = list(set(matches))     # Remove duplication 去重
+    email_list = list(set(matches))  # Remove duplication 去重
     email_list = ';'.join(email_list)
     return email_list
 
@@ -110,12 +109,12 @@ if __name__ == '__main__':
     invoices_details[u'dept'] = depts
 
     customers = tbl_customer()
-    departments = tbl_department()
-    customers_details = pd.merge(customers, departments, how='left', left_on='department', right_on='name')
+    # departments = tbl_department()
+    # customers_details = pd.merge(customers, departments, how='left', left_on='department', right_on='name')
 
-    invoices = pd.merge(invoices_details, customers_details, how='left', left_on=['GCI', 'dept'],
-                        right_on=['gci', 'name_y'])
-
+    invoices = pd.merge(invoices_details, customers, how='left', left_on=['GCI', 'dept'],
+                        right_on=['gci', 'department'])
+    # print(invoices)
     if len(invoices) > 0:
         for i in range(0, len(invoices)):
             invoices_ref = invoices.iloc[i, 0]  # T file
@@ -135,13 +134,69 @@ if __name__ == '__main__':
                 vat_number = vat_ref[-8:]  # 发票号码，最后8位
                 department = invoices.iloc[i, 13]
                 gci = invoices.iloc[i, 2]
-                invoice_date = invoices.iloc[i,1]
-                client = invoices.iloc[i,4]
+                invoice_date = invoices.iloc[i, 1]
+                client = invoices.iloc[i, 4]
                 # amount = sum(invoice_item[u'Amount'].tolist())
                 amount = decimal.Decimal('%.2f' % (sum(invoice_item[u'Amount'].tolist())))
 
+                currency = invoices.iloc[i, 8]
+                to_user_only = invoices.iloc[i, 23]
                 to = invoices.iloc[i, 21]
                 cc = invoices.iloc[i, 20]
-                # print(departments)
-                # print(inv_registers)
-                print(invoices_ref, short_hbl, vat_code, vat_number, department, gci, invoice_date, client, amount, to, cc)
+                #
+                # print(invoices)
+                # print(invoices_ref, to, cc, to_user_only)
+                title = '北京康捷空电子发票 发票号:' + vat_number + ' 货物单号:' + short_hbl
+                body = '''<b>感谢您使用北京康捷空国际货运代理有限公司</b><br>
+                        请查看附件中的发票，如有疑问，请勿回复此邮件，请联系您的客服代表或致电010-64579779 ，谢谢。<br>
+                        <br>
+                        尊敬的用户您好：<br>
+                        我司已于%s开具电子发票，再次感谢您对康捷空的支持与信赖。<br>
+                        发票信息如下：<br>
+                        开票日期：%s<br>
+                        发票代码：%s<br>
+                        发票号码：%s<br>
+                        货物单号：%s<br>
+                        购方名称：%s<br>
+                        销方名称：北京康捷空国际货运代理有限公司<br>
+                        价税合计：￥%s<br>
+                        ''' % (invoice_date, invoice_date, vat_code, vat_number, hbl, client, amount)
+                vat_link = get_file_link(config.branch, invoices_ref)
+                body_to_user = '''<b>此票已开出，但未发送至客户，请及时发送并将发送凭证扫描至edoc。谢谢！</b><br>
+                                   <br>
+                                    发票信息如下：<br>
+                                    开票日期：%s<br>
+                                    发票代码：0%s<br>
+                                    发票号码：%s<br>
+                                    货物单号：%s<br>
+                                    购方名称：%s<br>
+                                    销方名称：北京康捷空国际货运代理有限公司<br>
+                                    价税合计：￥%s<br>
+                                    发票链接：%s<br>
+                                ''' % (invoice_date, vat_code, vat_number, hbl, client, amount, vat_link)
+                if to != 'nan' and to_user_only == 0:
+                    download_file(config.branch, config.doc_type, invoices_ref, config.working_path)
+                    attach_path = config.working_path + '\\' + vat_number + '.pdf'
+                    os.rename(config.working_path + '\\' + invoices_ref + '.pdf', attach_path)
+                    send_email(to, cc, title, body, attach_path, 5, config.working_path, invoices_ref)
+                    convert_pdf(config.working_path, invoices_ref, hbls, gci)
+                    edoc_upload(config.branch, config.working_path)
+                    with app.app_context():
+                        print(invoices_ref, vat_ref, invoice_date, gci, client, hbl, amount,
+                                              currency, vat_ref, department, 'inv to customer', to, cc)
+                        update_invoice_status(invoices_ref, invoices_ref, invoice_date, gci, client, hbl, amount,
+                                              currency, vat_ref, department, 'inv to customer', to, cc)
+                elif to != 'nan' and to_user_only == 1:
+                    download_file(config.branch, config.doc_type, invoices_ref, config.working_path)
+                    attach_path = config.working_path + '\\' + vat_number + '.pdf'
+                    os.rename(config.working_path + '\\' + invoices_ref + '.pdf', attach_path)
+                    send_email(to, cc, title, body_to_user)
+                    with app.app_context():
+                        print(invoices_ref, vat_ref, invoice_date, gci, client, hbl, amount,
+                                              currency, vat_ref, department, 'inv to user', to, cc)
+                        update_invoice_status(invoices_ref, invoices_ref, invoice_date, gci, client, hbl, amount,
+                                              currency, vat_ref, department, 'inv to user', to, cc)
+                else:
+                    update_invoice_status(invoices_ref, invoices_ref, invoice_date, gci, client, hbl, amount,
+                                          currency, vat_ref, department, 'not send', to, cc)
+                    # no email send

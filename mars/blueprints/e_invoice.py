@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 
 from mars.extensions import db
 from mars.forms.e_invoice import NewInvCustomerForm, UploadForm, Upload_inv_register_form
-from mars.models import Inv_Customer, inv_register, Department
+from mars.models import Inv_Customer, inv_register, Department, Invoices
 
 e_invoice_bp = Blueprint('e_invoice', __name__)
 
@@ -131,6 +131,13 @@ def delete_customer(customer_id):
     db.session.commit()
     flash('Customer deleted.', 'success')
     return redirect(url_for('e_invoice.manage_customer'))
+
+
+@e_invoice_bp.route('/status', methods=['GET', 'POST'])
+@login_required
+def status():
+    status = Invoices.query.all()
+    return render_template('e_invoice/status.html', status=status)
 
 
 @e_invoice_bp.route('/inv_register', methods=['GET', 'POST'])
