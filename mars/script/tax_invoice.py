@@ -4,9 +4,9 @@ import re
 import sqlite3
 import pandas as pd
 import pyodbc
-from edoc_downloader import download_file, convert_pdf, edoc_upload, get_file_link
-from outlook_email import send_email
-from update_status import update_invoice_status
+from mars.script.edoc_downloader import download_file, convert_pdf, edoc_upload, get_file_link
+from mars.script.outlook_email import send_email
+from mars.script.update_status import update_invoice_status
 from flask import Flask,current_app
 import mars
 
@@ -99,6 +99,7 @@ def extract_email_address(email):
 
 
 if __name__ == '__main__':
+# def send_inv():
     pd.set_option('display.max_columns', None)
     inv_registers = tbl_inv_register()
     edoc_invoices = tbl_edoc()
