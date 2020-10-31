@@ -4,6 +4,15 @@ import re
 import sqlite3
 import pandas as pd
 import pyodbc
+import sys
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.dirname(
+            os.path.dirname(os.path.abspath(__file__))
+        )
+    )
+)
 from mars.script.edoc_downloader import download_file, convert_pdf, edoc_upload, get_file_link
 from mars.script.outlook_email import send_email
 from mars.script.update_status import update_invoice_status
