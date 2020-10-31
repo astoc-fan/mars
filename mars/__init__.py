@@ -15,7 +15,7 @@ from mars.blueprints.dashboard import dashboard_bp
 from mars.extensions import bootstrap, db, login_manager, mail, moment, whooshee, csrf, fa, scheduler
 from mars.models import Role, User, Permission, Department, Pre_alert, Customer, Rates
 from mars.settings import config
-from mars.script.tax_invoice import send_inv
+# from mars.script.tax_invoice import send_inv
 
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 

@@ -10,7 +10,7 @@ from mars.script.update_status import update_invoice_status
 from flask import Flask,current_app
 import mars
 
-app = mars.create_app()
+app = Flask('mars')
 
 
 class config:
