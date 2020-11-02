@@ -196,7 +196,7 @@ class Inv_Customer(db.Model):
     branch = db.Column(db.String(5))
     user_email = db.Column(db.Text)
     customer_email = db.Column(db.Text)
-    create = db.Column(db.DateTime, default=datetime.utcnow)
+    create = db.Column(db.DateTime, default=datetime.now())
     to_user_only = db.Column(db.Boolean)
     remark = db.Column(db.String(128))
 
