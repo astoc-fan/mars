@@ -1,0 +1,71 @@
+{% extends 'e_invoice/index.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}Invoice Status{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {{ render_breadcrumb_item('e_invoice.index', 'E-Tax Invoice') }}
+            {{ render_breadcrumb_item('e_invoice.inv_status', 'Invoice Status') }}
+        </ol>
+    </nav>
+
+    <div class="page-header">
+        <h2>Invoice Status
+            <small class="text-muted"> Invoice Count: {{ inv_count }}</small>
+        </h2>
+    </div>
+
+        {% if inv_status %}
+        <table class="table-xs table-striped"
+               data-toggle="table"
+               data-search="true"
+               data-show-Columns="true"
+               data-pagination="true"
+               data-page-size="25"
+               style="font-size: 11px;">
+            <thead>
+            <tr>
+                <th data-sortable="true" data-field="tax_ref">tax_ref</th>
+                <th data-sortable="true" data-field="tai_scan_date">tai_scan_date</th>
+                <th data-sortable="true" data-field="gci">gci</th>
+                <th data-sortable="true" data-field="customer_name">customer_name</th>
+                <th data-sortable="true" data-field="ei_invoice_ref">ei_invoice_ref</th>
+                <th data-sortable="true" data-field="amount">amount</th>
+                <th data-sortable="true" data-field="currency">currency</th>
+                <th data-sortable="true" data-field="vat_invoice_ref">vat_invoice_ref</th>
+                <th data-sortable="true" data-field="department">department</th>
+                <th data-sortable="true" data-field="status">status</th>
+                <th data-sortable="true" data-field="user_email">user_email</th>
+                <th data-sortable="true" data-field="customer_email">customer_email</th>
+                <th data-sortable="true" data-field="update_time">update_time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for inv in inv_status %}
+                <tr>
+                <td>{{ inv.tax_ref }}</td>
+                <td>{{ inv.tai_scan_date.strftime('%Y-%m-%d') }}</td>
+                <td>{{ inv.gci }}</td>
+                <td>{{ inv.customer_name }}</td>
+                <td>{{ inv.ei_invoice_ref }}</td>
+                <td>{{ inv.amount }}</td>
+                <td>{{ inv.currency }}</td>
+                <td>{{ inv.vat_invoice_ref }}</td>
+                <td>{{ inv.department }}</td>
+                <td>{{ inv.status }}</td>
+                <td>{{ inv.user_email }}</td>
+                <td>{{ inv.customer_email }}</td>
+                <td>{{ inv.update_time.strftime('%Y-%m-%d %H:%M')}}</td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <div class="tip"><h5>No Invoices.</h5></div>
+    {% endif %}
+
+{% endblock %}

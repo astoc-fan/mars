@@ -16,7 +16,8 @@ e_invoice_bp = Blueprint('e_invoice', __name__)
 @login_required
 def index():
     customer_count = Inv_Customer.query.count()
-    return render_template('e_invoice/index.html', customer_count=customer_count)
+    inv_count = Invoices.query.count()
+    return render_template('e_invoice/index.html', customer_count=customer_count,inv_count=inv_count)
 
 
 @e_invoice_bp.route("/<path:filename>")
@@ -133,11 +134,12 @@ def delete_customer(customer_id):
     return redirect(url_for('e_invoice.manage_customer'))
 
 
-@e_invoice_bp.route('/status', methods=['GET', 'POST'])
+@e_invoice_bp.route('/inv_status', methods=['GET', 'POST'])
 @login_required
-def status():
-    status = Invoices.query.all()
-    return render_template('e_invoice/status.html', status=status)
+def inv_status():
+    inv_status = Invoices.query.all()
+    inv_count = Invoices.query.count()
+    return render_template('e_invoice/inv_status.html', inv_status=inv_status,inv_count=inv_count)
 
 
 @e_invoice_bp.route('/inv_register', methods=['GET', 'POST'])
