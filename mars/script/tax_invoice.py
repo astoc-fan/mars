@@ -19,7 +19,7 @@ from mars.script.update_status import update_invoice_status
 from flask import Flask,current_app
 import mars
 
-app = Flask('mars')
+app = mars.create_app()
 
 
 class config:
@@ -41,7 +41,7 @@ class config:
              FROM EDOC.FOLDER F INNER JOIN EDOC.FOLDER_DOCUMENT FD ON F.G_U_I_D =FD.FOLDER__P_K 
              INNER JOIN EDOC.DOCUMENT D ON D.G_U_I_D = FD.DOCUMENT__P_K
              WHERE D.DOC_TYPE = 'TAI' AND SUBSTR(f.key_,1,2) = 'T2'
-             AND DATE(D.CREATION_TIME) = DATE(CURRENT TIMESTAMP)
+             --AND DATE(D.CREATION_TIME) = DATE(CURRENT TIMESTAMP)
              GROUP BY f.key_, D.DESCRIPTION'''
 
 
@@ -191,22 +191,23 @@ if __name__ == '__main__':
                     send_email(to, cc, title, body, attach_path, 5, config.working_path, invoices_ref)
                     convert_pdf(config.working_path, invoices_ref, hbls, gci)
                     edoc_upload(config.branch, config.working_path)
-                    with app.app_context():
-                        print(invoices_ref, vat_ref, invoice_date, gci, client, hbl, amount,
-                                              currency, vat_ref, department, 'inv to customer', to, cc)
-                        update_invoice_status(invoices_ref, invoices_ref, invoice_date, gci, client, hbl, amount,
-                                              currency, vat_ref, department, 'inv to customer', to, cc)
+                    app.app_context().push()
+                    print(invoices_ref, vat_ref, invoice_date, gci, client, hbl, amount,
+                                          currency, vat_ref, department, 'inv to customer', to, cc)
+                    update_invoice_status(invoices_ref, invoices_ref, invoice_date, gci, client, hbl, amount,
+                                          currency, vat_ref, department, 'inv to customer', to, cc)
                 elif to != 'nan' and to_user_only == 1:
                     download_file(config.branch, config.doc_type, invoices_ref, config.working_path)
                     attach_path = config.working_path + '\\' + vat_number + '.pdf'
                     os.rename(config.working_path + '\\' + invoices_ref + '.pdf', attach_path)
                     send_email(to, cc, title, body_to_user)
-                    with app.app_context():
-                        print(invoices_ref, vat_ref, invoice_date, gci, client, hbl, amount,
-                                              currency, vat_ref, department, 'inv to user', to, cc)
-                        update_invoice_status(invoices_ref, invoices_ref, invoice_date, gci, client, hbl, amount,
-                                              currency, vat_ref, department, 'inv to user', to, cc)
+                    app.app_context().push()
+                    print(invoices_ref, vat_ref, invoice_date, gci, client, hbl, amount,
+                                          currency, vat_ref, department, 'inv to user', to, cc)
+                    update_invoice_status(invoices_ref, invoices_ref, invoice_date, gci, client, hbl, amount,
+                                          currency, vat_ref, department, 'inv to user', to, cc)
                 else:
+                    app.app_context().push()
                     update_invoice_status(invoices_ref, invoices_ref, invoice_date, gci, client, hbl, amount,
                                           currency, vat_ref, department, 'not send', to, cc)
                     # no email send
