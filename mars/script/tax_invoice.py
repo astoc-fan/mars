@@ -41,7 +41,7 @@ class config:
              FROM EDOC.FOLDER F INNER JOIN EDOC.FOLDER_DOCUMENT FD ON F.G_U_I_D =FD.FOLDER__P_K 
              INNER JOIN EDOC.DOCUMENT D ON D.G_U_I_D = FD.DOCUMENT__P_K
              WHERE D.DOC_TYPE = 'TAI' AND SUBSTR(f.key_,1,2) = 'T2'
-             AND DATE(D.CREATION_TIME) >= DATE(CURRENT TIMESTAMP - 1 hour)
+             AND D.CREATION_TIME >= CURRENT TIMESTAMP - 1 hours
              GROUP BY f.key_, D.DESCRIPTION'''
 
 
