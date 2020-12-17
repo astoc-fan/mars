@@ -84,6 +84,7 @@ def extract_content(htmlfile):
     else:
         pass
     df = pd.DataFrame(result, columns=col_name).dropna(axis=0, how='all', inplace=False)
+    # print(df)
     grouped = df.groupby(by='发票号', group_keys=False).agg({'DO号': lambda x: x.str.cat(sep=', '),
                                                           '提货地': lambda x: x.head(1),
                                                           '箱数': lambda x: x.head(1),
