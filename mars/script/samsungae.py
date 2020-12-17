@@ -71,7 +71,7 @@ def extract_content(htmlfile):
     result_len = []
     for line in result:
         result_len.append(len(line))
-    col_name = ['日期','发票号', 'DO号', '提货地', '箱数', '托数', '数量', '毛重 KG', '体积 m³', '报关地点', '货物条款', '指定代理', '合同']
+    col_name = ['日期','发票号', 'DO号', '提货地', '箱数', '托数', '数量', '报关地点', '货物条款', '指定代理', '合同']
     # 与col_name比较，长删短补
     if max(result_len) < len(col_name):
         # 如result长度大于标准，从最后删除多余的列
@@ -89,8 +89,8 @@ def extract_content(htmlfile):
                                                           '箱数': lambda x: x.head(1),
                                                           '托数': lambda x: x.head(1),
                                                           '数量': lambda x: x.head(1),
-                                                          '毛重 KG': lambda x: x.head(1),
-                                                          '体积 m³': lambda x: x.head(1),
+                                                          # '毛重 KG': lambda x: x.head(1),
+                                                          # '体积 m³': lambda x: x.head(1),
                                                           '报关地点': lambda x: x.head(1),
                                                           '货物条款': lambda x: x.head(1),
                                                           '指定代理': lambda x: x.head(1),
@@ -99,6 +99,7 @@ def extract_content(htmlfile):
     csv_name = os.path.splitext(htmlfile)[0]+r'.csv'
     csv = grouped.to_csv(csv_name, index=True, header=True, encoding='utf_8_sig')
     return csv_name
+
 
 def get_hawb(sr):
     source = r'F:\Groups\Air Export\customer service 2013\JG--CS 2019-2020\TSLED tracking report EI--2020.09.xlsx'
